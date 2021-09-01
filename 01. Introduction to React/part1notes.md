@@ -143,3 +143,58 @@ const App = () => {
 - We define a new component named `Hello` and place it inside our `App` component.
 - A component can also be used multiple times as shown above.
 - A convention is that the `root component` is called `App`.
+
+## Props: Passing Data To Components
+- Pass data to components using `props`.
+- Modify `Hello` component.
+```javascript
+const Hello = (props) => {
+    return (
+        <div>
+            <p>Hello {props.name}</p>
+        </div>
+    )
+}
+```
+- Parameter called `props`.
+    - Parameter receives an object which has fields corresponding to all the "props" the user of the component defines.
+- Props are defined like below.
+```javascript
+const App = () => {
+    return (
+        <div>
+            <h1>Greetings</h1>
+            <Hello name="George" />
+            <Hello name="Daisy" />
+        </div>
+    )
+}
+```
+- Prop values can be hard coded or results of JavaScript expressions.
+    - If value of prop is JavaScript, it must be wrapped in curly braces.
+- Use two props below.
+```javascript
+const Hello = (props) => {
+    return (
+        <div>
+            <p>
+                Hello {props.name}, you are {props.age} years old
+            </p>
+        </div>
+    )
+}
+
+const App = () => {
+    const name = 'Peter'
+    const age = 10
+
+    return (
+        <div>
+            <h1>Greetings</h1>
+            <Hello name="Maya" age={26 + 10}>
+            <Hello name={name} age={age}>
+        </div>
+    )
+}
+```
+- We passed values of variables, result of expression, and regular strings as props.
