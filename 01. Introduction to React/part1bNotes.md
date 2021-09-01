@@ -278,3 +278,37 @@ setTimeoutt(arto.greet.bind(arto), 1000)
     - Doesn't matter how or where the method is called.
 - Learn more about `this`:
     - `https://egghead.io/courses/understand-javascript-s-this-keyword-in-depth`
+
+## Classes
+- No class mechanism like those in OOP languages.
+- Features exist to simulate object-oriented classes.
+- Define a "class" called Person and two Person objects.
+```javascript
+class Person {
+    constructor(name, age) {
+        this.name = name
+        this.age = age
+    }
+    greet() {
+        console.log('hello, my name is ' + this.name)
+    }
+}
+
+const adam = new Person('Adam Ondra', 35)
+adam.greet()
+
+const janja = new Person('Janja Garnbret', 22)
+janja.greet()
+```
+- The type of both objects is `Object`.
+    - JavaScript types are only `Boolean`, `Null`, `Undefined`, `Number`, `String`, `Symbol`, `BigInt`, and `Object`.
+- Learn more about classes below:
+    - `https://github.com/petsel/not-awesome-es6-classes`
+    - `https://rajaraodv.medium.com/is-class-in-es6-the-new-bad-part-6c4e6fe1ee65`
+
+
+## JavaScript Materials
+- Mozilla's JavaScript Guide: `https://developer.mozilla.org/en-US/docs/Web/JavaScript`
+- Read: `https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript`
+- You-Dont-Know-JS Book: `https://github.com/getify/You-Dont-Know-JS`
+- Javascript.info: `https://javascript.info/`
