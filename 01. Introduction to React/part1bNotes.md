@@ -93,3 +93,45 @@ console.log(rest)               // [3, 4, 5] is printed.
 ```
 - `first` and `second` receive first two integers of the array.
 - The remaining integers are "collected" into an array of their own assigned to variable called `rest`.
+
+## Objects
+- Different ways to define objects in JavaScript.
+- Can use `object literals`.
+```javascript
+const object1 = {
+    name: 'Arto Hellas',
+    age: 35,
+    education: 'PhD',
+}
+
+const object2 = {
+    name: 'Full Stack web application development',
+    level: 'intermediate studies',
+    size: 5,
+}
+
+const object3 = {
+    name: {
+        first: 'Dan',
+        last: 'Abramov',
+    },
+    grades: [2, 3, 5, 3],
+    department: 'Stanford University',
+}
+```
+- Values of the properties can be any types.
+    - integers, strings, arrays, objects...
+- Properties of objects are referenced using "dot" notation or brackets.
+```javascript
+console.log(object1.name)       // Arto Hellas is printed.
+const fieldName = 'age'
+console.log(object1[fieldName]) // 35 is printed.
+```
+- Can add properties to an object using dot notation or brackets.
+```javascript
+object1.address = 'Helsinki'
+object1['secret number'] = 12341
+```
+- If the property has a space, we need to use bracket and not dot notation.
+- Objects can also have methods.
+- Objects can be defined using constructor functions like in Java's classes.
