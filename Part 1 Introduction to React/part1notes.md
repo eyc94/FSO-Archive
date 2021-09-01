@@ -9,3 +9,10 @@
 $ npx create-react-app part1
 $ cd part1
 ```
+- Run the application
+```
+$ npm start
+```
+- By default, app runs in localhost port 3000.
+    - `http://localhost:3000`
+    - Default browser launches automatically.
