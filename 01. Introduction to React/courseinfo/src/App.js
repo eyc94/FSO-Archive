@@ -1,6 +1,6 @@
 import React from 'react'
 
-// Header Component. Rendering name of the course.
+// Header Component. Renders name of the course.
 const Header = (props) => {
   return (
     <>
