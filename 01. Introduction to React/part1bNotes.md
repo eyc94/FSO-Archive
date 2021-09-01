@@ -28,3 +28,8 @@ x = 4               // Causes an error.
 - `let` defines a normal variable.
 - Type of variable can change.
     - `y` stores an integer initially and stores a string at the end.
+- You can define variables using `var`.
+    - Follow these links to learn more:
+    - `https://medium.com/podiihq/javascript-variables-should-you-use-let-var-or-const-394f7645c88f`
+    - `https://www.jstips.co/en/javascript/keyword-var-vs-let/`
+    - `https://www.youtube.com/watch?v=sjyJBL5fkp8`
