@@ -116,3 +116,30 @@ const App = () => {
 ```javascript
 <br />
 ```
+
+## Multiple Components
+- Modify `App.js` as follows.
+- Import and export left out to make compact, but still needed.
+```javascript
+const Hello = () => {
+    return (
+        <div>
+            <p>Hello world</p>
+        </div>
+    )
+}
+
+const App = () => {
+    return (
+        <div>
+            <h1>Greetings</h1>
+            <Hello />
+            <Hello />
+            <Hello />
+        </div>
+    )
+}
+```
+- We define a new component named `Hello` and place it inside our `App` component.
+- A component can also be used multiple times as shown above.
+- A convention is that the `root component` is called `App`.
