@@ -1,1 +1,12 @@
 # JavaScript
+- Name of JavaScript standard is ECMAScript.
+    - Latest as of June 2021 is ES12 or ECMAScript 2021.
+- Not all browsers support newest JavaScript features.
+    - Lots of code is transpiled from newer versions to older versions of JavaScript.
+    - Most popular way to transpile is `Babel`.
+    - Transpilation is automatic in React apps created by `create-react-app`.
+- Node.js is a JavaScript runtime environment.
+- Code written in files with `.js` extension.
+    - Code run by the command: `node name_of_file.js`.
+- Can run JavaScript code in the Node console.
+    - Pull up console by the command: `node`.
