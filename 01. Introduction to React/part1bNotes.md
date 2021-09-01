@@ -135,3 +135,55 @@ object1['secret number'] = 12341
 - If the property has a space, we need to use bracket and not dot notation.
 - Objects can also have methods.
 - Objects can be defined using constructor functions like in Java's classes.
+
+## Functions
+- Whole process to define an arrow function is:
+```javascript
+const sum = (p1, p2) => {
+    console.log(p1)
+    console.log(p2)
+    return p1 + p2
+}
+```
+- The function call is below:
+```javascript
+const result = sum(1, 5)
+console.log(result)     // 6 is printed.
+```
+- We can exclude the parentheses if there is just a single parameter.
+```javascript
+const square = p => {
+    console.log(p)
+    return p * p
+}
+```
+- If function contains a single expression, braces are not needed.
+- Remove console printing.
+```javascript
+const square = p => p * p
+```
+- The short form above is handy when manipulating arrays (map method).
+```javascript
+const t = [1, 2, 3]
+const tSquared = t.map(p => p * p)
+// tSquared is now [1, 4, 9]
+```
+- **Function Declaration**.
+```javascript
+function product(a, b) {
+    return a * b
+}
+
+const result = product(2, 6)
+// result is now 12.
+```
+- **Function Expression**.
+    - There is no need to give the function a name and the definition may reside among the rest of the code.
+```javascript
+const average = function(a, b) {
+    return (a + b) / 2
+}
+
+const result = average(2, 5)
+// result is now 3.5.
+```
