@@ -24,3 +24,26 @@ const App = () => {
     )
 }
 ```
+
+## Component Helper Functions
+- Expand Hello component to guess year of birth of person greeted:
+```javascript
+const Hello = (props) => {
+    const bornYear = () => {
+        const yearNow = new Date().getFullYear()
+        return yearNow - props.age
+    }
+
+    return (
+        <div>
+            <p>
+                Hello {props.name}, you are {props.age} years old
+            </p>
+            <p>So you were probably born in {bornYear()}</p>
+        </div>
+    )
+}
+```
+- Directly access props passed to Hello component.
+- We are basically defining functions within functions.
+    - Defined helper function inside another function that defines behavior of our component.
