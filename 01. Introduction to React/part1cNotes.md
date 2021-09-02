@@ -275,3 +275,34 @@ const App = () => {
     )
 }
 ```
+
+## Event Handler is a Function
+- Event handler defined like this:
+```javascript
+<button onClick={() => setCounter(counter + 1)}>
+    plus
+</button>
+```
+- `setCounter` function is called only when the user clicks the button.
+- Should separate event handlers into separate functions and not define inside attribute values.
+```javascript
+const App = () => {
+    const [ counter, setCounter ] = useState(0)
+
+    const increaseByOne = () => setCounter(counter + 1)
+
+    const setToZero = () => setCounter(0)
+
+    return (
+        <div>
+            <div>{counter}</div>
+            <button onClick={increaseByOne}>
+                plus
+            </button>
+            <button onClick={setToZero}>
+                zero
+            </button>
+        </div>
+    )
+}
+```
