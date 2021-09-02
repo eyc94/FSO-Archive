@@ -388,3 +388,12 @@ const App = () => {
 - We can decrement the counter as well.
 - Event handler passed to `Button` throught the `onClick` prop.
     - This convention of naming is suggested. But, it can be anything.
+
+## Changes In State Cause Rerendering
+- Once app starts, code in `App` is executed.
+- This code uses a `useState` to create the application state, setting an initial value of `counter`.
+- This component also contains the `Display` component which shows the counter's value, 0, and three `Button` components.
+- The buttons all have event handlers used to change the state of the counter.
+- When one button is clicked, event handler is executed.
+- Event handler changes state of `App` component with `setCounter` function.
+    - **Calling function which changes the state causes component to rerender**.
