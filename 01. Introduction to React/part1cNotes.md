@@ -208,3 +208,70 @@ export default App
 - When `setCounter` is called, React re-renders the component.
     - The function body of the component function gets re-executed.
 - Every time `setCounter` modifies the state it causes the component to re-render.
+
+## Event Handling
+- We talked about event handlers before.
+- Change application so counter increase happens when user clicks a button.
+    - Button elements support `mouse events`.
+    - `click` is the most common.
+    - `click` event can be triggered with the keyboard or a touch screen despite the name.
+- Registering an event handler function to the `click` event is like this:
+```javascript
+const App = () => {
+    const [ counter, setCounter ] = useState(0)
+
+    const handleClick = () => {
+        console.log('clicked')
+    }
+
+    return (
+        <div>
+            <div>{counter}</div>
+            <button onClick={handleClick}>
+                plus
+            </button>
+        </div>
+    )
+}
+```
+- The code above logs "clicked" to the console each time the button is pressed.
+- Set the value of button's `onClick` attribute to reference `handleClick` function.
+- The event handler function can also be defined directly in the value of `onClick` attribute like below:
+```javascript
+const App = () => {
+    const [ counter, setCounter ] = useState(0)
+
+    return (
+        <div>
+            <div>{counter}</div>
+            <button onClick={() => console.log('clicked')}>
+                plus
+            </button>
+        </div>
+    )
+}
+```
+- We can increase value of counter by one and the component gets re-rendered.
+```javascript
+<button onClick={() => setCounter(counter + 1)}>
+    plus
+</button>
+```
+- Add button for reset counter.
+```javascript
+const App = () => {
+    const [ counter, setCounter ] = useState(0)
+
+    return (
+        <div>
+            <div>{counter}</div>
+            <button onClick={() => setCounter(counter + 1)}>
+                plus
+            </button>
+            <button onClick={() => setCounter(0)}>
+                zero
+            </button>
+        </div>
+    )
+}
+```
