@@ -103,3 +103,64 @@ const Hello = ({ name, age }) => {
 ```
 - Props passed to component are directly destructured into the variables `name` and `age`.
 - We assign the values of the properties directly to variables by destructuring the props object that is passed to the component function as a parameter.
+
+## Page Re-rendering
+- Pages remain the same after initial rendering.
+- What if we wanted to create counter where value increased as a function of time or at click of a button.
+- `App.js` below:
+```javascript
+import React from 'react'
+
+const App = (props) => {
+    const {counter} = props
+    return (
+        <div>{counter}</div>
+    )
+}
+
+export default App
+```
+- `index.js` below:
+```javascript
+import ReactDOM from 'react-dom'
+import App from './App'
+
+let counter = 1
+
+ReactDOM.render(
+    <App counter={counter} />,
+    document.getElementById('root')
+)
+```
+- Reload the browser to get new content.
+- `App` component is given the value of counter via the `counter` prop.
+- Component then renders that value to the screen.
+- What happens when value of `counter` changes?
+- Even if we add the next code, the component won't re-render.
+```javascript
+counter += 1
+```
+- The component can re-render by calling `ReactDOM.render` method again.
+```javascript
+let counter = 1
+const refresh = () => {
+    ReactDOM.render(<App counter={counter} />,
+    document.getElementById('root')))
+}
+
+refresh()
+counter += 1
+refresh()
+counter += 1
+refresh()
+```
+- Re-rendering command wrapped inside of `refresh` function.
+- The values 1, 2, and 3 appear on the screen. This happens so fast that you cannot notice values 1 and 2.
+- We can instead re-render in an interval (1 second).
+```javascript
+setInterval(() => {
+    refresh()
+    counter += 1
+}, 1000)
+```
+However, making many calls to `ReactDOM.render` method is not a good way to re-render components.
