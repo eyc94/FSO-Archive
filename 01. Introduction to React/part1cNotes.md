@@ -397,3 +397,25 @@ const App = () => {
 - When one button is clicked, event handler is executed.
 - Event handler changes state of `App` component with `setCounter` function.
     - **Calling function which changes the state causes component to rerender**.
+
+## Refactoring the Components
+- We can destructure and simplify the `Display` component.
+```javascript
+const Display = ({ counter }) => {
+    return (
+        <div>{counter}</div>
+    )
+}
+```
+- Only contains one return statement so we can remove curly braces.
+```javascript
+const Display = ({ counter }) => <div>{counter}</div>
+```
+- Simplify the `Button` component as well.
+```javascript
+const Button = ({ onClick, text }) => {
+    <button onClick={onClick}>
+        {text}
+    </button>
+}
+```
