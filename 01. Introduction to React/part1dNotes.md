@@ -95,3 +95,40 @@ const handleLeftClick = () => {
 }
 ```
 - Changing state has to be done by setting the state to a new object.
+
+## Handling Arrays
+- Add piece of state containing an array `allClicks` that remembers every click in the app.
+```javascript
+const App = () => {
+    const [left, setLeft] = useState(0)
+    const [right, setRight] = useState(0)
+    const [allClicks, setAll] = useState([])
+
+    const handleLeftClick = () => {
+        setAll(allClicks.concat('L'))
+        setLeft(left + 1)
+    }
+
+    const handleRightClick = () => {
+        setAll(allClicks.concat('R'))
+        setRight(right + 1)
+    }
+
+    return (
+        <div>
+            {left}
+            <button onClick={handleLeftClick}>left</button>
+            <button onClick={handleRightClick}>right</button>
+            {right}
+            <p>{allClicks.join(' ')}</p>
+        </div>
+    )
+}
+```
+- Every click stored in state called `allClicks` which is initially empty.
+- When left button clicked, we add 'L' to the array.
+- When right button clicked, we add 'R' to the array.
+- The `concat` method does not mutate the existing array. It returns a new copy with the item added to it.
+- Do NOT use the `push` method because it mutates the array.
+- We call the `join` method on the `allClicks` array that joins all items into a single string separated by the string passed in as the argument.
+    - The string in this case is empty string.
