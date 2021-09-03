@@ -32,3 +32,8 @@ console.log('props value is', props)
     - Higher-Order Functions: `https://www.youtube.com/watch?v=BMUiFMZr7vk&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84`
     - Map: `https://www.youtube.com/watch?v=bCqtb-Z5YGQ&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84&index=3`
     - Reduce Basics: `https://www.youtube.com/watch?v=Wl98eZpkp-c&t=31s`
+
+## Event Handlers Revisited
+- Revisit part 1's review.
+
+## Rendering Collections
