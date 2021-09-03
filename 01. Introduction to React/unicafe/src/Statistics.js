@@ -24,7 +24,6 @@ const Statistics = (props) => {
 					<StatisticLine text='positive' value={props.good / total * 100} />
 				</tbody>
 			</table>
-			
 		</>
 	)
 }
