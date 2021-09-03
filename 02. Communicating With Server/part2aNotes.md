@@ -270,3 +270,4 @@ const App = ({ notes }) => {
     // ...
 }
 ```
+- Look at branches and code here: `https://github.com/fullstack-hy/part2-notes/tree/part2-1`
