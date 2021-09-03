@@ -273,3 +273,55 @@ const App = () => {
     )
 }
 ```
+
+## Event Handling Revisited
+- Revisit topic of event handling.
+- Assume out app has this `App` component.
+```javascript
+const App = () => {
+    const [value, setValue] = useState(10)
+
+    return (
+        <div>
+            {value}
+            <button>reset to zero</button>
+        </div>
+    )
+}
+```
+- We want to reset `value` to 0 when we click the button.
+- We have to add an `event handler`.
+- Event handlers must be a function or a reference to a function.
+    - Every other type will not work.
+    - We also cannot have a function "call" be an event handler.
+- One solution is this:
+```javascript
+<button onClick={() => console.log('clicked the button')}>
+    button
+</button>
+```
+- Event handler is a function defined using arrow function syntax.
+- Calling this function happens when button is clicked.
+- Reset like this:
+```javascript
+<button onClick={() => setValue(0)}>button</button>
+```
+- Defining event handlers directly in attribute of button is not the *best* idea.
+- Event handlers can be defined in a separate place.
+```javascript
+const App = () => {
+    const [value, setValue] = useState(10)
+
+    const handleClick = () => {
+        console.log('clicked the button')
+        setValue(0)
+    }
+
+    return (
+        <div>
+            {value}
+            <button onClick={handleClick}>button</button>
+        </div>
+    )
+}
+```
