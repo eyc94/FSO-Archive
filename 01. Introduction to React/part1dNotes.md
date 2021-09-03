@@ -325,3 +325,117 @@ const App = () => {
     )
 }
 ```
+
+## Function That Returns a Function
+- Another way to define event handlers is to use a function that returns a function.
+```javascript
+const App = () => {
+    const [value, setValue] = useState(10)
+
+    const hello = () => {
+        const handler = () => console.log('hello world')
+        return handler
+    }
+
+    return (
+        <div>
+            {value}
+            <button onClick={hello()}>button</button>
+        </div>
+    )
+}
+```
+- Event handler is now a function call.
+- This call is okay because we return a function.
+- Earlier when just calling a function, they would return `undefined`.
+- What's the point of this?
+```javascript
+const App = () => {
+    const [value, setValue] = useState(10)
+
+    const hello = (who) => {
+        const handler = () => {
+            console.log('hello', who)
+        }
+        return handler
+    }
+
+    return (
+        <div>
+            {value}
+            <button onClick={hello('world')}>button</button>
+            <button onClick={hello('react')}>button</button>
+            <button onClick={hello('function')}>button</button>
+        </div>
+    )
+}
+```
+- Functions returning functions can be used in defining generalized functionality that can be customized with parameters.
+- The `hello` function can be thought of as a factory that makes customized event handlers for greeting users.
+- We can refactor like so:
+```javascript
+const hello = (who) => {
+    return () => {
+        console.log('hello', who)
+    }
+}
+```
+- We can omit curly braces:
+```javascript
+const hello = (who) =>
+    () => {
+        console.log('hello', who)
+    }
+```
+- Write all arrows on the same line:
+```javascript
+const hello = (who) => () => {
+    console.log('hello', who)
+}
+```
+- We can use this trick to define event handlers that set the state of the component to a given value:
+```javascript
+const App = () => {
+    const [value, setValue] = useState(10)
+
+    const setToValue = (newValue) => () => {
+        setValue(newValue)
+    }
+
+    return (
+        <div>
+            {value}
+            <button onClick={setToValue(1000)}>thousand</button>
+            <button onClick={setToValue(0)}>reset</button>
+            <button onClick={setToValue(value + 1)}>increment</button>
+        </div>
+    )
+}
+```
+- We don't have to return a function to achieve above. We can just define the function like so:
+```javascript
+const App = () => {
+    const [value, setValue] = useState(10)
+
+    const setToValue = (newValue) => {
+        setValue(newValue)
+    }
+    
+    return (
+        <div>
+            {value}
+            <button onClick={() => setToValue(1000)}>
+                thousand
+            </button>
+            <button onClick={() => setToValue(0)}>
+                reset
+            </button>
+            <button onClick={() => setToValue(value + 1)}>
+                increment
+            </button>
+        </div>
+    )
+}
+```
+- The event handler is a function that calls the function `setToValue` with the input parameter.
+- You can use either approach. It is a matter of preference.
