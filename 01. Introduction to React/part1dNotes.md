@@ -218,3 +218,8 @@ const App = () => {
     )
 }
 ```
+
+## Old React
+- We use `state hook` to add state to our React components.
+    - Available v16.8.0 onwards.
+- Before new versions, state had to be defined as `class` components, using class syntax.
