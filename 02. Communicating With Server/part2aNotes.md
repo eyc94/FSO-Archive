@@ -182,3 +182,22 @@ console.log(result)
 - `[1, 2, 3]` would be printed to console.
 - `map` creates a new array. New elements of array created from original array by `mapping`.
 - The function takes a note object as a parameter and returns the value of its `id` field.
+
+## Anti-Pattern: Array Indexes As Keys
+- We can bypass the error using array indexes as keys.
+- Indexes can be retrieved by passing a second parameter to the callback function of the `map` method.
+```javascript
+notes.map((note, i) => ...)
+```
+- `i` is assigned the value of index where `note` resides.
+```javascript
+<ul>
+    {notes.map((note, i) => 
+        <li key={i}>
+            {note.content}
+        </li>
+    )}
+</ul>
+```
+- This is **not** recommended.
+- Read more about it here: `https://robinpokorny.medium.com/index-as-a-key-is-an-anti-pattern-e0349aece318`
