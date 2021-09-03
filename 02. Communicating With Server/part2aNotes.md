@@ -25,3 +25,10 @@ console.log('props value is', props)
 }
 ```
 - Visual Studio Code has a builtin snippet. Type `log` and hit enter.
+
+## JavaScript Arrays
+- We will use methods of JavaScript arrays like `find`, `filter`, and `map`.
+- Watch these videos for review in this playlist: `https://www.youtube.com/playlist?list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84`
+    - Higher-Order Functions: `https://www.youtube.com/watch?v=BMUiFMZr7vk&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84`
+    - Map: `https://www.youtube.com/watch?v=bCqtb-Z5YGQ&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84&index=3`
+    - Reduce Basics: `https://www.youtube.com/watch?v=Wl98eZpkp-c&t=31s`
