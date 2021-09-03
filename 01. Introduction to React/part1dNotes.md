@@ -223,3 +223,24 @@ const App = () => {
 - We use `state hook` to add state to our React components.
     - Available v16.8.0 onwards.
 - Before new versions, state had to be defined as `class` components, using class syntax.
+
+## Debugging React Applications
+- Large part of time spent on reading and debugging code.
+- Good practices and tools are important.
+- Keep the developer console open at all times.
+- Using the `console.log` method is a good way of debugging.
+    - Log the `props` parameter to see what the component is taking in.
+    - To log to console, we must not use shortcuts like destructuring. Make it less compact.
+- When using `console.log`, don't combine `objects` with the `+` operator. Separate them with commas like so:
+```javascript
+console.log('props value is', props)
+```
+- You can pause the execution of your app code in the dev console by writing the command `debugger` anywhere in your code.
+- Debugger also allows executing code line by line with controls found on the right side of `Sources` tab.
+- Can also add breakpoints in the `Sources` tab without writing the command `debugger`.
+- Inspect component variables in `Scope` section.
+- Add this React Developer Tools extension to Chrome:
+    - `https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi`
+    - Adds new `Components` tab to the dev tools.
+    - Can view React elements, state, and props.
+    - Shows the state of hooks in the order of their definition.
