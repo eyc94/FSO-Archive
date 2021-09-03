@@ -439,3 +439,16 @@ const App = () => {
 ```
 - The event handler is a function that calls the function `setToValue` with the input parameter.
 - You can use either approach. It is a matter of preference.
+
+## Passing Event Handlers to Child Components
+- Make sure the attribute names are correct when passing props to the component.
+
+## Do Not Define Components Withing Components
+- Do not define components inside other components.
+    - It still works but leads to many problems down the road.
+- React treats a component defined inside another component as a new component in every render.
+
+## Useful Readings
+- React Documentation: `https://reactjs.org/docs/hello-world.html`
+- Start Learning React: `https://egghead.io/courses/start-learning-react`
+- Beginner's Guide to React: `https://egghead.io/courses/the-beginner-s-guide-to-react`
