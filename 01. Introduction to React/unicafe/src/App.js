@@ -3,6 +3,14 @@ import React, { useState } from 'react'
 const Statistics = (props) => {
   const total = props.good + props.neutral + props.bad
 
+  if (props.good === 0 && props.neutral === 0 && props.bad === 0) {
+    return (
+      <>
+        No feedback given
+      </>
+    )
+  }
+
   return (
     <>
       <div>good {props.good}</div>
