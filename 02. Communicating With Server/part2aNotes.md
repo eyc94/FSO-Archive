@@ -201,3 +201,72 @@ notes.map((note, i) => ...)
 ```
 - This is **not** recommended.
 - Read more about it here: `https://robinpokorny.medium.com/index-as-a-key-is-an-anti-pattern-e0349aece318`
+
+## Refactoring Modules
+- Refactor by destructing. We only need the `notes` field of the props.
+```javascript
+const App = ({ notes }) => {
+    return (
+        <div>
+            <h1>Notes</h1>
+            <ul>
+                {notes.map(note =>
+                    <li key={note.id}>
+                        {note.content}
+                    </li>
+                )}
+            </ul>
+        </div>
+    )
+}
+```
+- Separate displaying note into its own component `Note`.
+```javascript
+const Note = ({ note }) => {
+    return (
+        <li>{note.content}</li>
+    )
+}
+
+const App = ({ notes }) => {
+    return (
+        <div>
+            <h1>Notes</h1>
+            <ul>
+                {notes.map(note =>
+                    <Note key={note.id} note={note} />
+                )}
+            </ul>
+        </div>
+    )
+}
+```
+- Now the `key` attribute must be defined for the `Note` component and not the `li` tags.
+- We have been writing a whole React app in one file. Not practical.
+- Each component should be in their own file.
+- Move `Note` component into own module.
+- In smaller applications, components are placed in a directory called `components`, which is placed in `src`.
+- Convention is to name the file after the component.
+- Create a directory called `components` and place a file called `Note.js` in it.
+```javascript
+import React from 'react'
+
+const Note = ({ note }) => {
+    return (
+        <li>{note.content}</li>
+    )
+}
+
+export default Note
+```
+- This is a React component, so we must import `React`.
+- Last line exports the declared module.
+- Our `App.js` that uses the component must import the module.
+```javascript
+import React from 'react'
+import Note from './components/Note'
+
+const App = ({ notes }) => {
+    // ...
+}
+```
