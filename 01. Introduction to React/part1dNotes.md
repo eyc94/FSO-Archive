@@ -244,3 +244,32 @@ console.log('props value is', props)
     - Adds new `Components` tab to the dev tools.
     - Can view React elements, state, and props.
     - Shows the state of hooks in the order of their definition.
+
+## Rules of Hooks
+- The `useState` and `useEffect` functions must not be called from inside a loop, a conditional expression, or any place that is not a function defining a component.
+```javascript
+const App = () => {
+    // these are ok
+    const [age, setAge] = useState(0)
+    const [name, setName] = useState('Juha Tauriainen')
+
+    if (age > 10) {
+        // This does not work!
+        const [foobar, setFoobar] = useState(null)
+    }
+
+    for (let i = 0; i < age; i++) {
+        // This is not good!
+        const [rightWay, setRightWay] = useState(false)
+    }
+
+    const notGood = () => {
+        // This is not good!
+        const [x, setX] = useState(-1000)
+    }
+
+    return (
+        // ...
+    )
+}
+```
