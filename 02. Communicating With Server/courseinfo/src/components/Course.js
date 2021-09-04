@@ -7,9 +7,9 @@ const Course = (props) => {
 
     return (
         <div>
-            <Header course={props.course.name} />
-            <Content parts={props.course.parts} />
-            <Total parts={props.course.parts} />
+            <Header course={props.courses.name} />
+            <Content parts={props.courses.parts} />
+            <Total parts={props.courses.parts} />
         </div>
     )
 }
