@@ -1,6 +1,5 @@
 import React from 'react'
 
-// Total Component. Renders total number of exercises.
 const Total = (props) => {
     return (
         <>
