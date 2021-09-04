@@ -1,6 +1,5 @@
 import React from 'react'
 
-// Part Component. Renders the name and number of exercises of one part.
 const Part = (props) => {
     return (
         <p>
