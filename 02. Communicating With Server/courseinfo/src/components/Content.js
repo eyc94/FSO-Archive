@@ -1,7 +1,6 @@
 import React from 'react'
 import Part from './Part'
 
-// Content Component. Renders the parts and their number of exercises.
 const Content = (props) => {
     return (
         <div>
