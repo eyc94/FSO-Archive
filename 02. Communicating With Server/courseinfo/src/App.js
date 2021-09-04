@@ -2,7 +2,7 @@ import React from 'react'
 import Course from './components/Course'
 
 const App = () => {
-    const course = [
+    const courses = [
         {
             name: 'Half Stack application development',
             id: 1,
@@ -49,8 +49,8 @@ const App = () => {
 
     return (
         <div>
-            <Course course={course[0]} />
-            <Course course={course[1]} />
+            <Course courses={courses[0]} />
+            <Course courses={courses[1]} />
         </div>
     )
 }
