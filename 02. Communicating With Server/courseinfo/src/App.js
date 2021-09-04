@@ -1,5 +1,5 @@
 import React from 'react'
-import Course from './components/Course'
+import Course from './components/Course' // Created a separate Course module for branch 2-5.
 
 const App = () => {
     const courses = [
@@ -49,6 +49,7 @@ const App = () => {
 
     return (
         <div>
+            {/* Created a separate Components module as part of branch 2-5 */}
             <Course courses={courses[0]} />
             <Course courses={courses[1]} />
         </div>
