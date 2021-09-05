@@ -137,4 +137,31 @@ const App = (props) => {
 - This event handler is called every time a `change` occurs in the input element.
 - Event handler receives the event object as its `event` parameter.
 - `target` corresponds to the `input` element and `event.target.value` refers to the input value of that element.
-- Do not need to call `event.preventDefault()`
+- Do not need to call `event.preventDefault()` like we did during `onSubmit` handler.
+    - There is no default action on input change. This is not like a form submission.
+- Follow along in the console to see how event handler is called.
+- The `App` component's `newNote` state reflects the current value of the input.
+- We can complete the `addNote` function for creating new notes.
+```javascript
+const addNote = (event) => {
+    event.preventDefault()
+    const noteObject = {
+        content: newNote,
+        date: new Date().toISOString(),
+        important: Math.random() < 0.5,
+        id: notes.length + 1,
+    }
+
+    setNotes(notes.concat(noteObject))
+    setNewNote('')
+}
+```
+- First, create a new object for the note called `noteObject`.
+- This will receive its content from the component's `newNote` state.
+- `id` is generated baased on number of notes.
+    - Works since notes never deleted.
+- Our note has a 50% chance of being important.
+- New note is added to the list of notes using the array's `concat` method.
+    - Important to **never** mutate state.
+    - This method creates a new copy of the array with the item added to the end.
+- Event handler also resets the input value by calling `setNewNote` function of the `newNote` state.
