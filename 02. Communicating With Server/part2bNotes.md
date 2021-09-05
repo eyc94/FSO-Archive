@@ -165,3 +165,88 @@ const addNote = (event) => {
     - Important to **never** mutate state.
     - This method creates a new copy of the array with the item added to the end.
 - Event handler also resets the input value by calling `setNewNote` function of the `newNote` state.
+
+## Filtering Displayed Elements
+- Let's add a way to view only important notes.
+- Add state to `App` component that keeps track of which notes should be displayed.
+```javascript
+const App = (props) => {
+    const [notes, setNotes] = useState(props.notes)
+    const [newNote, setNewNote] = useState('')
+    const [showAll, setShowAll] = useState(true)
+
+    // ...
+}
+```
+- Change component so it stores a list of all notes to be displayed in `notesToShow` variable.
+```javascript
+import React, { useState } from 'react'
+import Note from './components/Note'
+
+const App = (props) => {
+    const [notes, setNotes] = useState(props.notes)
+    const [newNote, setNewNote] = useState('')
+    const [showAll, setShowAll] = useState(true)
+
+    // ...
+
+    const notesToShow = showAll
+        ? notes
+        : notes.filter(note => note.important === true)
+    
+    return (
+        <div>
+            <h1>Notes</h1>
+            <ul>
+                {notesToShow.map(note =>
+                    <Note key={note.id} note={note} />
+                )}
+            </ul>
+            // ...
+        </div>
+    )
+}
+```
+- The `notesToShow` variable is determined using a conditional operator. It follows the format below:
+```javascript
+const result = condition ? val1 : val2
+```
+- The `result` variable contains `val1` if `condition` is true. If `condition` is false, `result` contains `val2`.
+- If the value of `showAll` is false, `notesToShow` will be a list that only contains notes with `important` set to true.
+    - This is done with the array `filter` method.
+- The comparison `===` is not necessary.
+```javascript
+notes.filter(note => note.important)
+```
+- Add ability to toggle `showAll` state from the UI.
+```javascript
+import React, { useState } from 'react'
+import Note from './components/Note'
+
+const App = (props) => {
+    const [notes, setNotes] = useState(props.notes) 
+    const [newNote, setNewNote] = useState('')
+    const [showAll, setShowAll] = useState(true)
+
+    // ...
+
+    return (
+        <div>
+            <h1>Notes</h1>
+            <div>
+                <button onClick={() => setShowAll(!showAll)}>
+                    show {showAll ? 'important' : 'all'}
+                </button>
+            </div>
+            <ul>
+                {notesToShow.map(note =>
+                    <Note key={note.id} note={note} />
+                )}
+            </ul>
+            // ...
+        </div>
+    )
+}
+```
+- Displayed notes are controlled with button.
+- Event handler is so simple that it is defined inside the attribute.
