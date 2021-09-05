@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -13,6 +13,7 @@ const App = () => {
             <form>
                 <div>
                     name: <input />
+                    <div>debug: {newName}</div>
                 </div>
                 <div>
                     <button type="submit">add</button>
