@@ -42,3 +42,10 @@ npx json-server --port 3001 --watch db.json
     - The app created by `create-react-app` uses port 3000, so we use 3001.
 - Navigate to `http://localhost:3001/notes`.
     - `json-server` serves the notes we previously wrote in JSON format.
+- The idea from here on would be to add notes to the server.
+    - Saving to json-server.
+- React code fetches the notes from the server and renders them to screen.
+- When new note is added, the React code sends it to the server to make the new note persist in memory.
+- `json-server` stores all data in `db.json` file, which resides on server.
+    - Real world: data would be stored in a database.
+    - `json-server` is a handy tool that allows the use of server-side functionality in the development phase without the need to program any of it.
