@@ -49,3 +49,40 @@ npx json-server --port 3001 --watch db.json
 - `json-server` stores all data in `db.json` file, which resides on server.
     - Real world: data would be stored in a database.
     - `json-server` is a handy tool that allows the use of server-side functionality in the development phase without the need to program any of it.
+
+## The Browser As A Runtime Environment
+- Fetch already existing notes to our React app from `http://localhost:3001/notes`.
+- We learned back then how to fetch data using `XMLHttpRequest` or HTTP request made using an XHR object.
+    - No longer recommended.
+    - Browsers support the `fetch` method based on `promises`.
+- A reminder of what **NOT** to do:
+```javascript
+const xhttp = new XMLHttpRequest()
+
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        const data = JSON.parse(this.responseText)
+        // handle the response that is saved in variable data
+    }
+}
+
+xhttp.open('GET', '/data.json', true)
+xhttp.send()
+```
+- We register an `event handler` to the xhttp object representing the HTTP request.
+    - This will be called by the JavaScript runtime whenever the state of the `xhttp` object changes.
+    - If change in state means the response to request has arrived, the data is handled accordingly.
+- Code in event handler is defined before request sent to server.
+    - Will be executed at a later point in time.
+- Code does not execute synchronously (top to bottom).
+- JavaScript engines (runtime environments) follow `asynchronous model`.
+    - This requires all IO-operations to be executed as non-blocking.
+    - Code execution continues immediately after calling an IO function, without waiting for it to return.
+- When async operation is completed, the JS engine calls the event handler registered to that operation.
+- JS engines are `single-threaded` meaning they cannot execute code in parallel.
+    - Requirement therefore to use a non-blocking model for IO operations.
+    - Otherwise, browser freezes during the fetching of data from server.
+- If a code takes a long time to execute, browser gets stuck.
+- What the heck is the event loop anyway?
+    `https://www.youtube.com/watch?v=8aGhZQkoFbQ`
+- Possible for parallelized code with `web workers`.
