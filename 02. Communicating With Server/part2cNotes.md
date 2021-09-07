@@ -276,3 +276,91 @@ axios.get('http://localhost:3001/notes').then(response => {
 - This method is sometimes acceptable.
 - Let's instead move fetching of data inside `App` component.
     - It's not immediately obvious *where* we place `axios.get` in the component.
+
+## Effect-hooks
+- We learned `state hooks`.
+- We now look at `effect hooks`.
+    - The `Effect Hook` lets you perform side effects in function components. Data fetching, setting up a subscription, and manually changing the DOM in React components are all examples of side effects.
+- Effect hooks are the right tool to use when fetching data from server.
+- Remove fetching of data from `index.js`.
+```javascript
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+- Change `App.js` as follows:
+```javascript
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import Note from './components/Note'
+
+const App = () => {
+    const [notes, setNotes] = useState([])
+    const [newNote, setNewNote] = useState('')
+    const [showAll, setShowAll] = useState(true)
+
+    useEffect(() => {
+        console.log('effect')
+        axios
+            .get('http://localhost:3001/notes')
+            .then(response => {
+                console.log('promise fulfilled')
+                setNotes(response.data)
+            })
+    }, [])
+    console.log('render', notes.length, 'notes')
+
+    // ...
+}
+```
+- These logs clarify the progression of the expression.
+- This is printed to console:
+```
+render 0 notes
+effect
+promise fulfilled
+render 3 notes
+```
+- The body of the function defining the component is executed and component render for first time.
+- `render 0 notes` is printed meaning data has not been fetched from server yet.
+- The function inside the effect is executed immediately after rendering.
+- "effects" is then printed to the console.
+- `axios.get` initiates fetching of data from server and registers an event handler.
+- When data arrives from server, the JS runtime calls the registered function as the event handler.
+- Prints "promise fulfilled" and stores the notes received from the server into the state using the function `setNotes(response.data)`.
+- A call to a state-updating function triggers re-rendering of the component.
+    - `render 3 notes` is printed as a result.
+    - Notes fetched from the server are rendered to the screen.
+- Let's rewrite the code a bit differently:
+```javascript
+const hook = () => {
+    console.log('effect')
+    axios
+        .get('http://localhost:3001/notes')
+        .then(response => {
+            console.log('promise fulfilled')
+            setNotes(response.data)
+        })
+}
+
+useEffect(hook, [])
+```
+- `useEffect` takes two parameters:
+    1. A function (the `effect` itself).
+        - By default, effects run after every completed render, but you can choose to fire it only when certain values have changed.
+        - The effect is *always* run after the component has been rendered.
+        - We only want to execute the effect along with the first render.
+    2. Used to specify how often the effect is run. If empty array `[]`, then the effect is only run along with the first render of the component.
+- Could have written code this way:
+```javascript
+useEffect(() => {
+    console.log('effect')
+
+    const eventHandler = response => {
+        console.log('promise fulfilled')
+        setNotes(response.data)
+    }
+
+    const promise = axios.get('http://localhost:3001/notes')
+    promise.then(eventHandler)
+}, [])
+```
+- When adding notes, we still cannot add to server.
