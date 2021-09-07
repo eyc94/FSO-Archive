@@ -22,13 +22,9 @@ const App = () => {
         setCountryFilter(event.target.value)
     }
 
-    let countriesToShow = countries.filter(country => {
+    const countriesToShow = countries.filter(country => {
         return country.name.toLowerCase().includes(countryFilter.toLowerCase())
     })
-
-    if (countryFilter === '') {
-        countriesToShow = []
-    }
 
     return (
         <div>

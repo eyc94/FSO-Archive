@@ -8,6 +8,7 @@ const Countries = (props) => {
             </div>
         )
     }
+
     return (
         <div>
             {props.countriesToDisplay.map(country => 
