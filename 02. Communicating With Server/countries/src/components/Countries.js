@@ -11,7 +11,7 @@ const Countries = (props) => {
     return (
         <div>
             {props.countriesToDisplay.map(country => 
-                <div>{country.name}</div>
+                <div key={country.alpha3Code}>{country.name}</div>
             )}
         </div>
     )
