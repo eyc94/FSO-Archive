@@ -4,7 +4,7 @@
 - Familiarize with how code executing in browser communicates with backend.
 - We use a tool called `JSON Server` to act as our server.
 - Create a file called `db.json` in the root directory of project:
-```javascript
+```json
 {
     "notes": [
         {
@@ -86,3 +86,107 @@ xhttp.send()
 - What the heck is the event loop anyway?
     `https://www.youtube.com/watch?v=8aGhZQkoFbQ`
 - Possible for parallelized code with `web workers`.
+
+# NPM
+- Fetching data from server.
+- We can use promise based function `fetch` to pull data from server.
+- We will instead use `axios` library to communicate between the browser and the server.
+    - Like fetch, but is pleasant to use.
+    - Helps us get familiar with add external libraries (`npm packages`) to React projects.
+- Practically all JS projects defined using node package manager (npm).
+    - Projects created using `create-react-app` also follow the npm format.
+    - `package.json` file is an indicator the project uses npm.
+- Example of `package.json`:
+```json
+{
+    "name": "part2-notes",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@testing-library/jest-dom": "^5.11.9",
+        "@testing-library/react": "^11.2.3",
+        "@testing-library/user-event": "^12.6.0",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "react-scripts": "4.0.1",
+        "web-vitals": "^0.2.4"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+        "react-app",
+        "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+        ],
+        "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+        ]
+    }
+}
+```
+- `dependencies` part is the most important because it defines what `dependencies` (external libraries) the project has.
+- Install axios:
+```
+npm install axios
+```
+- `npm` commands should always be run in project root directory.
+    - The root directory is where `package.json` is.
+- Axios should now be included:
+```json
+{
+    "dependencies": {
+        "@testing-library/jest-dom": "^5.11.9",
+        "@testing-library/react": "^11.2.3",
+        "@testing-library/user-event": "^12.6.0",
+        "axios": "^0.21.1",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "react-scripts": "4.0.1",
+        "web-vitals": "^0.2.4"
+    },
+    // ...
+}
+```
+- The library code is now downloaded to `node_modules` directory.
+- Install `json-server` as a development dependency (only used during development):
+```
+npm install json-server --save-dev
+```
+- Make addition to `scripts` part of `package.json`:
+```json
+{
+    // ... 
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "server": "json-server --port 3001 --watch db.json"
+    },
+}
+```
+- We can now start json-server with:
+```
+npm run server
+```
+- There is a difference between the two `npm install` statements:
+```
+npm install axios
+npm install json-server --save-dev
+```
+- `axios` is installed as a runtime dependency of the app because the execution of the program requries existence of the library.
+- `json-server` is installed as a development dependency `--save-dev` because the program itself does not require it.
+    - Used to help during software development.
