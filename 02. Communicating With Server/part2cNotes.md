@@ -364,3 +364,7 @@ useEffect(() => {
 }, [])
 ```
 - When adding notes, we still cannot add to server.
+
+## The Development Runtime Environment
+- Following image shows the makeup of the application we have so far:
+![alt text](https://github.com/eyc94/Full-Stack-Open/images/application_makeup.png "Image of application makeup")
