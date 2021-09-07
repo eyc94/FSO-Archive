@@ -368,3 +368,11 @@ useEffect(() => {
 ## The Development Runtime Environment
 - Following image shows the makeup of the application we have so far:
 ![alt text](https://github.com/eyc94/Full-Stack-Open/blob/master/images/application_makeup.png "Image of application makeup")
+- The JS code making up React app runs in the browser.
+- Browser gets JS from `React dev server` which is the application that runs after `npm start`.
+    - The `dev-server` transforms the JS into a format understood by browser.
+    - Combines JS in different files into one file.
+- The React app in the browser fetches JSON formatted data from `json-server` running on port 3001.
+    - The server we query from `json-server` gets its data from `db.json`.
+- All point in development all parts of app are on the software developer's machine (localhost).
+    - Situation changes when app deploys on internet.
