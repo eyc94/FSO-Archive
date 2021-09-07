@@ -190,3 +190,89 @@ npm install json-server --save-dev
 - `axios` is installed as a runtime dependency of the app because the execution of the program requries existence of the library.
 - `json-server` is installed as a development dependency `--save-dev` because the program itself does not require it.
     - Used to help during software development.
+
+## Axios and Promises
+- json-server assumed to be running on port 3001.
+- Use 2 terminal windows to run the app and server at the same time.
+- use `import` statement to use library.
+- Add this to `index.js`:
+```javascript
+import axios from 'axios'
+
+const promise = axios.get('http://localhost:3001/notes')
+console.log(promise)
+
+const promise2 = axios.get('http://localhost:3001/foobar')
+console.log(promise2)
+```
+- Open `http://localhost:3000` and the dev console.
+- You should see something printed there.
+- When `index.js` changes, React does not notice automatically.
+    - You must manually refresh.
+    - You can make React notice automatically.
+        - Create a file called `.env` in the root of project and add the line:
+```
+FAST_REFRESH=false
+```
+- Restart app.
+- Axios' `get` method returns a `promise`.
+    - **A Promise is an object representing the eventual completion or failure of an asynchronous operation**.
+- A `Promise` is an object that represents an asynchronous operation.
+- Promise can have 3 states:
+    1. The promise is `pending`: It means that the final value (on of the next two) is not available yet.
+    2. The promise is `fulfilled`: It means the operation has completed and the final value is available, meaning successful operation. Sometimes called `resolved`.
+    3. The promise is `rejected`: It means that an error prevented the final value from being determined, meaning failed operation.
+- First operation is `fullfilled` representing a successful request.
+- Second operation is `rejected`. We were trying to make an HTTP GET request to an address that does not exist.
+- If we want access to the result of the operation represented by promise, we must register an event handler to the promise.
+    - Achieved by `then` method.
+```javascript
+const promise = axios.get('http://localhost:3001/notes')
+
+promise.then(response => {
+    console.log(response)
+})
+```
+- The JS runtime environment calls the callback function registered by `then` method providing it with a `response` as a parameter.
+    - `response` object has all data related to the response of an HTTP GET request.
+        - `data`, `status code`, and `headers`.
+- Storing promise in variable is not necessary like we did above. Chaining is more common.
+```javascript
+axios.get('http://localhost:3001/notes').then(response => {
+    const notes = response.data
+    console.log(notes)
+})
+```
+- The callback function takes the response data and stores in variable and prints it.
+- This is a more readable way to chain method calls:
+```javascript
+axios
+    .get('http://localhost:3001/notes')
+    .then(response => {
+        const notes = response.data
+        console.log(notes)
+    })
+```
+- Data returned by server is plain text (one long string).
+- Axios still able to parse data into JS array because server specified data format as `application/json; charset=utf-8`.
+- Can now use data fetched from server.
+- Try and request notes from our local server and render them, first as the `App` component.
+    - This approach has issues because we are rendering the entire `App` component only when we successfully get a response.
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+
+import axios from 'axios'
+
+axios.get('http://localhost:3001/notes').then(response => {
+    const notes = response .data
+    ReactDOM.render(
+        <App notes={notes} />,
+        document.getElementById('root')
+    )
+})
+```
+- This method is sometimes acceptable.
+- Let's instead move fetching of data inside `App` component.
+    - It's not immediately obvious *where* we place `axios.get` in the component.
