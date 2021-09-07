@@ -1,23 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import axios from 'axios'
 
 const App = () => {
     // Piece of state that holds person objects.
-    const [persons, setPersons] = useState([
-        { name: 'Arto Hellas', number: '123-123-1234' },
-        { name: 'Ada Lovelace', number: '39-44-5323523' },
-        { name: 'Dan Abramov', number: '12-43-234345' },
-        { name: 'Mary Poppendieck', number: '39-23-6423122' }
-    ])
-
+    const [persons, setPersons] = useState([])
     // State that holds name input.
     const [newName, setNewName] = useState('')
     // State that holds number input.
     const [newNumber, setNewNumber] = useState('')
     // State that holds the filter input.
     const [nameFilter, setNameFilter] = useState('')
+
+    // Effect hook to fetch data from json-server.
+    useEffect(() => {
+        console.log('effect')
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => {
+                console.log('promise fulfilled')
+                setPersons(response.data)
+            })
+    }, [])
 
     // This event handler function runs when form is submitted.
     const addPerson = (event) => {
