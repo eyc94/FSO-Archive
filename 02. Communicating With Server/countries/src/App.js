@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import Countries from './components/Countries'
+
 const App = () => {
     const [countryFilter, setCountryFilter] = useState('')
     const [countries, setCountries] = useState([])
@@ -11,7 +13,6 @@ const App = () => {
             .get('https://restcountries.eu/rest/v2/all')
             .then(response => {
                 console.log('promise fulfilled')
-                console.log(response.data[0].name)
                 setCountries(response.data)
             })
     }, [])
@@ -29,11 +30,7 @@ const App = () => {
     return (
         <div>
             <div>find countries <input value={countryFilter} onChange={changeCountryHandler} /></div>
-            <div>
-                {countriesToShow.map(country => 
-                    <div>{country.name}</div>
-                )}
-            </div>
+            <Countries countriesToDisplay={countriesToShow} />
         </div>
     )
 }
