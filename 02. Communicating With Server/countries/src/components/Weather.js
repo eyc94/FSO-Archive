@@ -7,12 +7,9 @@ const Weather = (props) => {
     const api_key = process.env.REACT_APP_API_KEY
 
     useEffect(() => {
-        console.log('effect')
         axios
             .get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${props.country.name}`)
             .then(response => {
-                console.log('promise fulfilled')
-                console.log(response.data.current)
                 setWeatherInfo({
                     tempC: response.data.current.temperature,
                     icon: response.data.current.weather_icons[0],
