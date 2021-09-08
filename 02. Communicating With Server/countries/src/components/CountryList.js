@@ -1,5 +1,6 @@
 import React from 'react'
 import CountryInfo from './CountryInfo'
+import ShowButton from './ShowButton'
 
 const CountryList = (props) => {
     // If there are more than 10 countries.
@@ -23,6 +24,7 @@ const CountryList = (props) => {
                 {props.countries.map(country => 
                     <div key={country.alpha3Code}>
                         {country.name}
+                        <ShowButton country={country} />
                     </div>
                 )}
             </div>
