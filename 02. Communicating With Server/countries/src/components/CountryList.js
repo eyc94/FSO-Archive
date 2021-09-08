@@ -1,46 +1,33 @@
 import React from 'react'
+import CountryInfo from './CountryInfo'
 
 const CountryList = (props) => {
+    // If there are more than 10 countries.
     if (props.countries.length > 10) {
         return (
             <div>
                 Too many matches, specify another filter
             </div>
         )
-    } else if (props.countries.length === 1) {
+    } else if (props.countries.length === 1) { // If 1 country results.
         return (
             <>
                 {props.countries.map(country =>
-                    <div key={country.alpha3Code}>
-                        <h1>{country.name}</h1>
-                        <div>Capital: {country.capital}</div>
-                        <div>Population: {country.population}</div>
-                        <h2>Languages</h2>
-                        <ul>
-                            {country.languages.map(language =>
-                                <li key={language.iso639_2}>{language.name}</li>
-                            )}
-                        </ul>
-                        <img
-                            src={country.flag}
-                            alt={`Flag of ${country.name}`}
-                            style={{ maxWidth: 200, height: 'auto' }}
-                        />
-                    </div>
+                    <CountryInfo key={country.alpha3Code} country={country} />
                 )}
             </>
         )
+    } else { // If 1-10 countries result.
+        return (
+            <div>
+                {props.countries.map(country => 
+                    <div key={country.alpha3Code}>
+                        {country.name}
+                    </div>
+                )}
+            </div>
+        )
     }
-
-    return (
-        <div>
-            {props.countries.map(country => 
-                <div key={country.alpha3Code}>
-                    {country.name}
-                </div>
-            )}
-        </div>
-    )
 }
 
 

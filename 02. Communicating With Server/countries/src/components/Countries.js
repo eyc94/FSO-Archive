@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import CountryList from './CountryList'
 
 const Countries = (props) => {
@@ -38,4 +38,5 @@ const handleShowInfo = () => {
             style={{ maxWidth: 200, height: 'auto' }}
         />
     </div>
-} */}
+}
+*/}
