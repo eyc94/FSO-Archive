@@ -31,7 +31,7 @@ const Weather = (props) => {
             <div><strong>Temperature:</strong> {weatherInfo.tempC} Celcius</div>
             <img
                 src={weatherInfo.icon}
-                alt={`Image of weather for ${props.country.name}`}
+                alt={`Weather for ${props.country.name}`}
                 style={{ maxWidth: 200, height: 'auto' }}
             />
             <div><strong>Wind:</strong> {weatherInfo.windSpeed} mph direction {weatherInfo.windDir}</div>
