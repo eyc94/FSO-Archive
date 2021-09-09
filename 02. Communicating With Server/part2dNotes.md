@@ -63,3 +63,94 @@ addNote = event => {
 - Remember that we use the `concat` method because we cannot mutate the component's original state.
 - Go to `http://localhost:3001/notes` to see our notes actually sent.
 - It's wiser to let the backend server generate timestamp for us.
+
+## Changing the Importance of Notes
+- Add button to every note that is used to toggle importance.
+- Make changes to `Note` component:
+```javascript
+const Note = ({ note, toggleImportance }) => {
+    const label = note.important ? 'make not important' : 'make important'
+
+    return (
+        <li>
+            {note.content}
+            <button onClick={toggleImportance}>{label}</button>
+        </li>
+    )
+}
+```
+- Button has event handler called `toggleImportance`.
+- `App` component has `toggleImportanceOf` event handler function and passes to every `Note` component.
+```javascript
+const App = () => {
+    const [notes, setNotes] = useState([]) 
+    const [newNote, setNewNote] = useState('')
+    const [showAll, setShowAll] = useState(true)
+
+    // ...
+
+    const toggleImportanceOf = (id) => {
+        console.log('importance of ' + id + ' needs to be toggled')
+    }
+
+    // ...
+
+    return (
+        <div>
+        <h1>Notes</h1>
+        <div>
+            <button onClick={() => setShowAll(!showAll)}>
+            show {showAll ? 'important' : 'all' }
+            </button>
+        </div>      
+        <ul>
+            {notesToShow.map((note, i) => 
+            <Note
+                key={i}
+                note={note} 
+                toggleImportance={() => toggleImportanceOf(note.id)}
+            />
+            )}
+        </ul>
+        // ...
+        </div>
+    )
+}
+```
+- Notice every note has its own "unique" event handler function since the `id` of every not is unique.
+- Notes in json-server backend can be changed in two different ways by making HTTP requests to the note's unique URL.
+    - Either "replace" the entire note with an HTTP PUT request.
+    - Or, change some of the note's properties with an HTTP PATCH request.
+- Final form of the event handler is:
+```javascript
+const toggleImportanceOf = id => {
+    const url = `http://localhost:3001/notes/${id}`
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !important }
+
+    axios.put(url, changedNote).then(response => {
+        setNotes(notes.map(note => note.id !== id ? note : response.data))
+    })
+}
+```
+- First line defines unique URL for each note based on its id.
+- The array `find` method is used to find the note we want to modify.
+    - Assign this to the `note` variable.
+- Create a "new object" that is an exact copy of the old note, apart from the "important" property.
+    - Code uses `object spread` syntax for creating new object.
+        - `{ ...note }` creates a new object with copies of all properties from the `note` object.
+        - When we add properties inside the curly braces after the spreaded object, `{ ...note, important: true }`, the value of the `important` property of the new object will be `true`.
+        - In our example, the `important` property gets the negation of its previous value in the original object.
+- Why did we decide to make a copy of the note object instead of just mutating the data?
+    - The variable `note` is a reference to an item in the `notes` array in the component's state.
+    - Recall we must never mutate state directly.
+- The new object `changedNote` is a `shallow copy`.
+    - This means the values of the new object are the same as the values of the old.
+    - If the values of old object were also objects, the copied values in new object would reference same objects in old object.
+- New note sent with PUT request to backend where it replaces old object.
+- Callback function sets the component's `notes` state to a new array containing all items from the previous `notes` array, except for the old note which is replaced by the updated version in `response.data`.
+    - Done with `map` method.
+        - Creates a new array by mapping every item in old array into an item in new array.
+        - We iterate through all notes.
+        - If the note is not the one we're changing: `note.id !== id`, we copy the item from the old array into the new array.
+        - If the note is what we're changing, the object returned by server is used `response.data`.
