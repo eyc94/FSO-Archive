@@ -16,3 +16,50 @@
     - Data for new note sent in the `body` of the request.
 - The `json-server` requires all data to be sent in JSON format.
     - Request must contain the `Content-Type` request header with the value `application/json`.
+
+## Sending Data to the Server
+- Make the changes to the event handler responsible for creating a new note:
+```javascript
+addNote = event => {
+    event.preventDefault()
+    const noteObject = {
+        content: newNote,
+        date: new Date(),
+        important: Math.random() < 0.5,
+    }
+
+    axios
+        .post('http://localhost:3001/notes', noteObject)
+        .then(response => {
+            console.log(response)
+        })
+}
+```
+- Create new object but omit `id` because it's better to let server generate ids for our resources.
+- Object sent to server using axios `post` method.
+    - The event handler logs response that is sent back from server to console.
+- New note is stored in the value of the `data` property of the `response` object.
+- Data sent in POST request was a JS object. Axios automatically knew to set `Content-Type` to `application/json`.
+- New note not yet rendered to screen.
+    - Update state of `App` component when creating new note.
+```javascript
+addNote = event => {
+    event.preventDefault()
+    const noteObject = {
+        content: newNote,
+        date: new Date(),
+        important: Math.random() < 0.5,
+    }
+
+    axios
+        .post('http://localhost:3001/notes', noteObject)
+        .then(response => {
+            setNotes(notes.concat(response.data))
+            setNewNotes('')
+        })
+}
+```
+- New note returned by backend is added to list of notes in our app's state using `setNotes`. The form is also reset.
+- Remember that we use the `concat` method because we cannot mutate the component's original state.
+- Go to `http://localhost:3001/notes` to see our notes actually sent.
+- It's wiser to let the backend server generate timestamp for us.
