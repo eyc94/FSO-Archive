@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
     // Piece of state that holds person objects.
@@ -17,11 +17,10 @@ const App = () => {
     // Effect hook to fetch data from json-server.
     useEffect(() => {
         console.log('effect')
-        axios
-            .get('http://localhost:3001/persons')
-            .then(response => {
-                console.log('promise fulfilled')
-                setPersons(response.data)
+        personService
+            .getAll()
+            .then(initialPersons => {
+                setPersons(initialPersons)
             })
     }, [])
 
@@ -38,10 +37,10 @@ const App = () => {
         if (persons.filter(person => person.name.toLowerCase() === newName.toLowerCase()).length > 0) {
             alert(`${newName} is already added to the phonebook`)
         } else { // If not already in phonebook, concatenate to persons state.
-            axios
-                .post('http://localhost:3001/persons', personObject)
-                .then(response => {
-                    setPersons(persons.concat(response.data))
+            personService
+                .create(personObject)
+                .then(returnedPerson => {
+                    setPersons(persons.concat(returnedPerson))
                 })
         }
         setNewName('') // Clear the name input box.
