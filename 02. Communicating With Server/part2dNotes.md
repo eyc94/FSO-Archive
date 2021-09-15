@@ -154,3 +154,168 @@ const toggleImportanceOf = id => {
         - We iterate through all notes.
         - If the note is not the one we're changing: `note.id !== id`, we copy the item from the old array into the new array.
         - If the note is what we're changing, the object returned by server is used `response.data`.
+
+## Extracting Communication With The Backend Into a Separate Module
+- `App` component now bloated.
+- Extract backend server communication into its own module.
+- Create a `src/services` folder and add a file called `notes.js`.
+```javascript
+import axios from 'axios'
+const baseUrl = 'http://localhost:3001/notes'
+
+const getAll = () => {
+    return axios.get(baseUrl)
+}
+
+const create = newObject => {
+    return axios.post(baseUrl, newObject)
+}
+
+const update = (id, newObject) => {
+    return axios.put(`${baseUrl}/${id}`, newObject)
+}
+
+export default {
+    getAll: getAll,
+    create: create,
+    update: update
+}
+```
+- Module returns an object that has three functions: `getAll`, `create`, `update`.
+- Functions return the promises returned by axios methods.
+- `App` component uses import to get access to module:
+```javascript
+import noteService from './services/notes'
+
+const App = () => {
+```
+- The functions of the module can be used directly with the imported variable `noteService`.
+```javascript
+const App = () => {
+    // ...
+    useEffect(() => {
+        noteService
+            .getAll()
+            .then(response => {
+                setNotes(response.data)
+            })
+    }, [])
+
+    const toggleImportanceOf = id => {
+        const note = notes.find(n => n.id === id)
+        const changedNote = { ...notes, important: !important }
+
+        noteService
+            .update(id, changedNote)
+            .then(response => {
+                setNotes(notes.map(note => note.id !== id ? note : response.data))
+            })
+    }
+
+    const addNote = (event) => {
+        event.preventDefault();
+        const noteObject = {
+            content: newNote,
+            date: new Date().toISOString(),
+            important: Math.random() > 0.5
+        }
+
+        noteService
+            .create(noteObject)
+            .then(response => {
+                setNotes(notes.concat(response.data))
+                setNewNote('')
+            })
+    }
+    
+    // ...
+}
+
+export default App
+```
+- `App` component receives an object that contains the entire response for the HTTP request.
+- `App` component only uses the `response.data` property of the response object.
+- It would be much nicer to JUST get response data.
+- We want to be able to set it like below.
+```javascript
+noteService
+    .getAll()
+    .then(initialNotes => {
+        setNotes(initialNotes)
+    })
+```
+- So how do we make the above possible?
+- Change the `notes.js` file:
+```javascript
+import axios from 'axios'
+const baseUrl = 'http://localhost:3001/notes'
+
+const getAll = () => {
+    const request = axios.get(baseUrl)
+    return request.then(response => response.data)
+}
+
+const create = newObject => {
+    const request = axios.post(baseUrl, newObject)
+    return request.then(response => response.data)
+}
+
+const update = (id, newObject) => {
+    const request = axios.put(`${baseUrl}/${id}`, newObject)
+    return request.then(response => response.data)
+}
+
+export default {
+    getAll: getAll,
+    create: create,
+    update: update
+}
+```
+- No longer return the promise returned by axios directly.
+- We return what we need.
+- The modified `getAll` still returns a promise.
+- When HTTP request works, the promise returns the data sent back in the response from backend.
+- Update `App` component to work with changes made to module.
+```javascript
+const App = () => {
+    // ...
+    useEffect(() => {
+        noteService
+            .getAll()
+            .then(initialNotes => {
+                setNotes(initialNotes)
+            })
+    }, [])
+
+    const toggleImportanceOf = id => {
+        const note = notes.find(n => n.id === id)
+        const changedNote = { ...notes, important: !important }
+
+        noteService
+            .update(id, changedNote)
+            .then(returnedNote => {
+                setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+            })
+    }
+
+    const addNote = (event) => {
+        event.preventDefault();
+        const noteObject = {
+            content: newNote,
+            date: new Date().toISOString(),
+            important: Math.random() > 0.5
+        }
+
+        noteService
+            .create(noteObject)
+            .then(returnedNote => {
+                setNotes(notes.concat(returnedNote))
+                setNewNote('')
+            })
+    }
+    
+    // ...
+}
+
+export default App
+```
