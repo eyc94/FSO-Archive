@@ -319,3 +319,44 @@ const App = () => {
 
 export default App
 ```
+
+## Cleaner Syntax For Defining Object Literals
+- The module that handles services exports a strange looking object:
+```javascript
+{
+    getAll: getAll,
+    create: create,
+    update: update
+}
+```
+- The labels on the left of colon are the `keys` of the object.
+- The values on the right of the colon are `variables` defined in module.
+- The names of keys and variables are the same, so we can make more compact:
+```
+{
+    getAll,
+    create,
+    update
+}
+```
+- So, we can simplify to one line in the `notes.js` file.
+```javascript
+export default { getAll, create, update }
+```
+- This shortcut introduced in ES6.
+- For example, consider the variables below:
+```javascript
+const name = 'Leevi'
+const age = 0
+```
+- Older JS versions have objects defined like:
+```javascript
+const person = {
+    name: name,
+    age: age
+}
+```
+- The property fields and variable names are the same, so:
+```javascript
+const person = { name, age }
+```
