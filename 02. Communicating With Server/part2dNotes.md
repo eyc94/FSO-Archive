@@ -360,3 +360,84 @@ const person = {
 ```javascript
 const person = { name, age }
 ```
+
+## Promises and Errors
+- If application allows deletion, we can run into the problem where user tries to edit importance of already deleted note.
+- Simulate this by making the `getAll` function of the note service return a "hardcoded" note that does not actually exist in the backend server.
+```javascript
+const getAll = () => {
+    const request = axios.get(baseUrl)
+    const nonExisting = {
+        id: 10000,
+        content: 'This note is not saved to server',
+        date: '2019-05-30T17:30:31.098Z',
+        important: true,
+    }
+    return request.then(response => response.data.concat(nonExisting))
+}
+```
+- If we try to change important of hardcoded note, we get an error when making our HTTP PUT request.
+- Server responded with a '404 not found'.
+- Users won't be able to know an error happened without opening console.
+- Promises can be in one of three different states.
+    - When HTTP request fails, the associated promise is "rejected".
+    - Current code does not handle this rejection.
+- Rejection of a promise handled by providing the `then` method with a second callback.
+    - Called when promise is rejected.
+- More common way of adding a handler for rejected promises is to use `catch` method.
+- Error handler for rejected promises is like this:
+```javascript
+axios
+    .get('http://example.com/probably_will_fail')
+    .then(response => {
+        console.log('success!')
+    })
+    .catch(error => {
+        console.log('fail')
+    })
+```
+- If request fails, event handler registered with `catch` method is called.
+- `catch` method is often utilized by placing deeper in promise chain.
+- When our app makes an HTTP request, we are creating a `promise chain`.
+```javascript
+axios
+    .put(`${baseUrl}/${id}`, newObject)
+    .then(response => response.data)
+    .then(changedNote => {
+        // ...
+    })
+```
+- `catch` method can be used to define a handler function at the end of a promise chain.
+    - Called when any promise in the chain throws an error and promise becomes `rejected`.
+```javascript
+axios
+    .put(`${baseUrl}/${id}`, newObject)
+    .then(response => response.data)
+    .then(changedNote => {
+        // ...
+    })
+    .catch(error => {
+        console.log('fail')
+    })
+```
+- Register an event handler in the `App` component.
+```javascript
+const toggleImportanceOf = id => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...note, important: !important }
+
+    noteService
+        .update(id, changedNote).then(returnedNote => {
+            setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        })
+        .catch(error => {
+            alert(
+                `the note ${note.content} was already deleted from server`
+            )
+            setNotes(notes.filter(n => n.id !== id))
+        })
+}
+```
+- Error message displayed with alert dialog.
+- Deleted note gets filtered out from the state.
+- The `filter` method used above removes an already deleted note by returning a new array with only items from the list for which the function passed as a parameter returns true for.
