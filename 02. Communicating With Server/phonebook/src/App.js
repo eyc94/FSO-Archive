@@ -47,6 +47,24 @@ const App = () => {
         setNewNumber('') // Clear the number input box.
     }
 
+    // On click handler for delete button.
+    const deletePerson = e => {
+        // We passed in the person object into the event handler.
+        // We can access the id and name properties.
+        const id = e.id
+        const name = e.name
+        const msg = `Delete ${name}?`
+
+        // Display a confirmation box to delete.
+        if (window.confirm(msg)) {
+            personService
+                .del(id)
+                .then(response => {
+                    setPersons(persons.filter(person => person.id !== id))
+                })
+        }
+    }
+
     // On change event handler for name input box.
     const handleNameChange = (event) => {
         setNewName(event.target.value)
@@ -81,7 +99,7 @@ const App = () => {
                 numberHandler={handleNumberChange}
             />
             <h2>Numbers</h2>
-            <Persons displayArray={personsToShow} />
+            <Persons delPerson={deletePerson} displayArray={personsToShow} />
         </div>
     )
 }
