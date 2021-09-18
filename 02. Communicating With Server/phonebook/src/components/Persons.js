@@ -6,8 +6,7 @@ const Persons = (props) => {
         <>
             {props.displayArray.map(person =>
                 <div key={person.name}>
-                    {person.name}
-                    {person.number}
+                    {person.name} {person.number}
                     <DeleteButton delPerson={() => props.delPerson(person)} text="delete" />
                 </div>
             )}
