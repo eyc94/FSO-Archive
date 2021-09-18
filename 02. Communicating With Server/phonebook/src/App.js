@@ -35,7 +35,16 @@ const App = () => {
         // If person's name is already in the phonebook, alert user.
         // Make lowercase to handle case insensitive inputs.
         if (persons.filter(person => person.name.toLowerCase() === newName.toLowerCase()).length > 0) {
-            alert(`${newName} is already added to the phonebook`)
+            const msg = `${newName} is already added to the phonebook, replace the old number with a new one?`
+            if (window.confirm(msg)) {
+                const personToChange = persons.filter(person => person.name.toLowerCase() === newName.toLowerCase())[0]
+                const changedPerson = { ...personToChange, number: newNumber }
+                personService
+                    .update(personToChange.id, changedPerson)
+                    .then(returnedPerson => {
+                        setPersons(persons.map(person => person.id !== personToChange.id ? person : changedPerson))
+                    })
+            }
         } else { // If not already in phonebook, concatenate to persons state.
             personService
                 .create(personObject)
