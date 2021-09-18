@@ -35,13 +35,20 @@ const App = () => {
         // If person's name is already in the phonebook, alert user.
         // Make lowercase to handle case insensitive inputs.
         if (persons.filter(person => person.name.toLowerCase() === newName.toLowerCase()).length > 0) {
+            // Message to display to user.
             const msg = `${newName} is already added to the phonebook, replace the old number with a new one?`
+            // If the user confirms the message.
             if (window.confirm(msg)) {
+                // Find the person in the array to change by filtering based on newName entered.
+                // This is an array so return the first position.
                 const personToChange = persons.filter(person => person.name.toLowerCase() === newName.toLowerCase())[0]
+                // Copy the existing person properties other than the new number into the new person object.
                 const changedPerson = { ...personToChange, number: newNumber }
+                // Call axios put method from our service file.
                 personService
-                    .update(personToChange.id, changedPerson)
+                    .update(personToChange.id, changedPerson) // Pass person's id that we got from filtering and pass in new person to update with.
                     .then(returnedPerson => {
+                        // Change the state of the persons array so that we can render new number to page.
                         setPersons(persons.map(person => person.id !== personToChange.id ? person : returnedPerson))
                     })
             }
