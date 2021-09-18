@@ -42,7 +42,7 @@ const App = () => {
                 personService
                     .update(personToChange.id, changedPerson)
                     .then(returnedPerson => {
-                        setPersons(persons.map(person => person.id !== personToChange.id ? person : changedPerson))
+                        setPersons(persons.map(person => person.id !== personToChange.id ? person : returnedPerson))
                     })
             }
         } else { // If not already in phonebook, concatenate to persons state.
