@@ -159,3 +159,69 @@ const toggleImportanceOf = id => {
 ```
 - We add an error message to the `errorMessage` state.
 - We set a timer to set `errorMessage` to `null` after 5 seconds.
+
+## Inline Styles
+- React makes it possible to write styles directly in code as `inline styles`.
+- Any React component or element can be provided with a set of CSS properties as a JS object through the `style` attribute.
+- CSS in JS is different than normal CSS files.
+- Say we wanted to give an element the color green and italic font that's 16 pixels in size.
+- This is CSS:
+```css
+{
+    color: green;
+    font-style: italic;
+    font-size: 16px;
+}
+```
+- This is React inline:
+```javascript
+{
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+}
+```
+- Every CSS property is defined as a separate property of JS object.
+- Numeric values can be defined as integers.
+- CSS has hyphenated. React is camelCase.
+- Add a bottom block to application by creating a `Footer` component and define the following inline styles.
+```javascript
+const Footer = () => {
+    const footerStyle = {
+        color: 'green',
+        fontStyle: 'italic',
+        fontSize: 16
+    }
+    return (
+        <div style={footerStyle}>
+            <br />
+            <em>Note app, Department of Computer Science, University of Helsinki 2021</em>
+        </div>
+    )
+}
+
+const App = () => {
+    // ...
+
+    return (
+        <div>
+            <h1>Notes</h1>
+
+            <Notification message={errorMessage} />
+
+            // ...
+
+            <Footer />
+        </div>
+    )
+}
+```
+- Inline style has limitations.
+    - `pseudo-classes` cannot be used straightforwardly.
+- Inline styles is typically against React conventions.
+- Best practice to separate CSS from content (HTML) and functionality (JS).
+- React philosophy is actually the polar opposite.
+    - Separation of CSS, HTML, and JS did not scale well in large applications.
+    - A React component defines the HTML for structuring the content, JS functions for functionality, and styling.
+    - All in one place.
+    - This is to create individual components that are as independent and reusable as possible.
