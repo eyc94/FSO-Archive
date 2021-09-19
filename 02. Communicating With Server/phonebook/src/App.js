@@ -17,6 +17,8 @@ const App = () => {
     const [nameFilter, setNameFilter] = useState('')
     // State that holds the error message.
     const [errorMessage, setErrorMessage] = useState(null)
+    // State that holds message type. This is passed as a class value for the message display.
+    const [messageType, setMessageType] = useState('')
 
     // Effect hook to fetch data from json-server.
     useEffect(() => {
@@ -52,6 +54,7 @@ const App = () => {
                 personService
                     .update(personToChange.id, changedPerson) // Pass person's id that we got from filtering and pass in new person to update with.
                     .then(returnedPerson => {
+                        setMessageType('success')
                         // Change the state of the persons array so that we can render new number to page.
                         setPersons(persons.map(person => person.id !== personToChange.id ? person : returnedPerson))
                         setErrorMessage(
@@ -61,11 +64,22 @@ const App = () => {
                             setErrorMessage(null)
                         }, 5000)
                     })
+                    .catch(error => {
+                        setMessageType('error')
+                        setErrorMessage(
+                            `Information of ${personToChange.id} has already been removed from the server`
+                        )
+                        setTimeout(() => {
+                            setErrorMessage(null)
+                        }, 5000)
+                        setPersons(persons.filter(p => p.id !== personToChange.id))
+                    })
             }
         } else { // If not already in phonebook, concatenate to persons state.
             personService
                 .create(personObject)
                 .then(returnedPerson => {
+                    setMessageType('success')
                     setPersons(persons.concat(returnedPerson))
                     setErrorMessage(
                         `Added ${returnedPerson.name}`
@@ -121,7 +135,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <Notification message={errorMessage} />
+            <Notification message={errorMessage} classType={messageType} />
             <Filter value={nameFilter} changeHandler={handleNameFilter} />
             <h2>Add a new</h2>
             <PersonForm
