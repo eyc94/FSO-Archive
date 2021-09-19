@@ -82,3 +82,80 @@ const Note = ({ note, toggleImportance }) => {
 ```
 
 ## Improved Error Message
+- Implement error message as its own component.
+```javascript
+const Notification = ({ message }) => {
+    if (message === null) {
+        return null
+    }
+
+    return (
+        <div className="error">
+            {message}
+        </div>
+    )
+}
+```
+- If value of `message` prop is `null`, then nothing is rendered to the screen.
+- In other cases, the message gets rendered inside of a div element.
+- Add a new piece of state called `errorMessage` to the `App` component.
+    - Initialize it with some error message so we can immediately test it.
+```javascript
+const App = () => {
+    const [notes, setNotes] = useState([])
+    const [newNote, setNewNote] = useState('')
+    const [showAll, setShowAll] = useState(true)
+    const [errorMessage, setErrorMessage] = useState('some error happened...')
+
+    // ...
+
+    return (
+        <div>
+            <h1>Notes</h1>
+            <Notification message={errorMessage} />
+            <div>
+                <button onClick={() => setShowAll(!showAll)}>
+                    show {showAll ? 'important' : 'all'}
+                </button>
+            </div>
+            // ...
+        </div>
+    )
+}
+```
+- Add style that suits an error message:
+```css
+.error {
+    color: red;
+    background: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    magrin-bottom: 10px;
+}
+```
+- Add logic for displaying the error message.
+- Change `toggleImportanceOf` function:
+```javascript
+const toggleImportanceOf = id => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = { ...notes, important: !note.important }
+
+    noteService
+        .update(changedNote).then(returnedNote => {
+            setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        })
+        .catch(error => {
+            setErrorMessage(
+                `Note ${note.content} was already removed from server`
+            )
+            setTimeout(() => {
+                setErrorMessage(null)
+            }, 5000)
+            setNotes(notes.filter(n => n.id !== id))
+        })
+}
+```
+- We add an error message to the `errorMessage` state.
+- We set a timer to set `errorMessage` to `null` after 5 seconds.
