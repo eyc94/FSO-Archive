@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import noteService from './services/notes'
 import Note from './components/Note'
+import './index.css'
 
 const App = () => {
     const [notes, setNotes] = useState([])
