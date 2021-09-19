@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
+import './index.css'
 
 const App = () => {
     // Piece of state that holds person objects.
@@ -13,6 +15,8 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('')
     // State that holds the filter input.
     const [nameFilter, setNameFilter] = useState('')
+    // State that holds the error message.
+    const [errorMessage, setErrorMessage] = useState(null)
 
     // Effect hook to fetch data from json-server.
     useEffect(() => {
@@ -50,6 +54,12 @@ const App = () => {
                     .then(returnedPerson => {
                         // Change the state of the persons array so that we can render new number to page.
                         setPersons(persons.map(person => person.id !== personToChange.id ? person : returnedPerson))
+                        setErrorMessage(
+                            `Added ${returnedPerson.name}`
+                        )
+                        setTimeout(() => {
+                            setErrorMessage(null)
+                        }, 5000)
                     })
             }
         } else { // If not already in phonebook, concatenate to persons state.
@@ -57,6 +67,12 @@ const App = () => {
                 .create(personObject)
                 .then(returnedPerson => {
                     setPersons(persons.concat(returnedPerson))
+                    setErrorMessage(
+                        `Added ${returnedPerson.name}`
+                    )
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
                 })
         }
         setNewName('') // Clear the name input box.
@@ -105,6 +121,7 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification message={errorMessage} />
             <Filter value={nameFilter} changeHandler={handleNameFilter} />
             <h2>Add a new</h2>
             <PersonForm
