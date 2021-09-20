@@ -262,3 +262,55 @@ response.end(JSON.stringify(notes))
 ```
 - No longer required with express because it happens automatically.
 - JSON is a string and not a JS object like the value assigned to `notes`.
+
+## Nodemon
+- We have to restart the app to see changes we made to it.
+- Pressing `Ctrl-C` is very cumbersome.
+- Solution is `nodemon`:
+    - Nodemon will watch the files in the directory in which nodemon was started, and if any files change, nodemon will automatically restart your node application.
+- Install `nodemon` by defining it as a `development dependency` with the command:
+```
+npm install --save-dev nodemon
+```
+- Contents of `package.json` will also change:
+```json
+{
+    // ...
+    "dependencies": {
+        "express": "^4.17.1",
+    },
+    "devDependencies": {
+        "nodemode": "^2.0.7"
+    }
+}
+```
+- If you made a mistake, you can just manually change it to the above.
+- By development dependencies, we are talking about tools that are needed only during the development of the app.
+    - Like testing or automatically restarting the application.
+    - Not needed when the app is run in production mode on the production server (e.g. Heroku).
+- Start our application with `nodemon` like:
+```
+node_modules/.bin/nodemon index.js
+```
+- Changes to application code now cause the server to restart automatically.
+- Browser still has to be manually refreshed.
+- Unlike React, we do not have the `hot reload` functionality to auto reload the browser.
+- Let's define a dedicated `npm script` in the `package.json` file.
+```json
+{
+    // ..
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    // ..
+}
+```
+- In the script, no need to specify `node_modules/.bin/nodemon` path to nodemon.
+    - This is because `npm` automatically knows to search for the file from that directory.
+- Can now start server in development mode with:
+```
+npm run dev
+```
+- Unlike `start` and `test` scripts, we have to add `run` to the command.
