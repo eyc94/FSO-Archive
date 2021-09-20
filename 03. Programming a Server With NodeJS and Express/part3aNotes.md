@@ -314,3 +314,26 @@ node_modules/.bin/nodemon index.js
 npm run dev
 ```
 - Unlike `start` and `test` scripts, we have to add `run` to the command.
+
+## REST
+- Expand app to provide same RESTful HTTP API as `json-server`.
+- Representational State Transfer, aka `REST`, was introduced in 2000.
+    - It is an architectural style meant for building scalable web apps.
+    - Concern ourselves with how RESTful APIs are typically understood in web apps.
+- It was mentioned that things like notes are called `resources`.
+    - Each resource has an associated URL which is the resource's unique address.
+    - One convention is to create unique address for resources by combining the name of resource type and resource's unique identifier.
+- Assume root URL is `www.example.com/api`.
+    - Assume resource type of note to be `notes`.
+    - Address of a note resource with id of 10 has the unique address of `www.example.com/api/notes/10`.
+- URL for the entire collection of all note resources is `www.example.com/api/notes`.
+- Can execute different operations on resources.
+    - Operation to be executed is defined by the HTTP `verb`.
+|URL|verb|functionality|
+|---|---|---|
+|notes/10|GET|fetches a single resource|
+|notes|GET|fetches all resources in the collection|
+|notes|POST|creates a new resource based on the request data|
+|notes/10|DELETE|removes the identified resource|
+|notes/10|PUT|replaces the entire identified resource with the request data|
+|notes/10|PATCH|replaces a part of the identified resource with the request data|
