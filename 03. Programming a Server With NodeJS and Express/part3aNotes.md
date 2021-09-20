@@ -156,3 +156,47 @@ console.log(`Server running on port ${PORT}`)
 - Restart server and refresh page.
 - `application/json` value in the `Content-Type` header tells the receiver that the data is in the JSON format.
 - The `notes` array gets transformed into JSON with `JSON.stringify(notes)` method.
+
+## Express
+- Implementing our server code with Node's built-in `http` web server is okay.
+- Not ideal when application grows in size because it's cumbersome.
+- Many libraries have been made to help make it easier to do server-side development with Node.
+- The most popular library intended for this purpose is `express`.
+- Define `express` as a project dependency:
+```
+npm install express
+```
+- The dependency is also added to our `package.json` file.
+```json
+{
+    // ...
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
+```
+- The source code for the dependency is installed to the `node_modules` folder in the root of the project.
+- There are other dependencies other than express installed in there.
+- The contents of the folder are the dependencies of express along with the dependencies of its dependencies, and so forth.
+    - This is called `transitive dependencies`.
+- The version 4.17.1 of express was installed here.
+- What does the caret `^` mean?
+```json
+"express": "^4.17.1"
+```
+- The versioning model used in npm is called `semantic versioning`.
+- The caret in front of `^4.17.1` means that when, and if, a dependency of a project gets updated, the version will be at least 4.17.1.
+    - Installed version can also be one with a larger `patch` number (last number).
+    - Can have a larger `minor` number (middle number).
+    - The `major` version (first number) of the library must be the same.
+- Update the dependencies of our project:
+```
+npm update
+```
+- If we start working on project on another computer, we can install up-to-date dependencies of the project defined in the `package.json` file:
+```
+npm install
+```
+- If `major` number of a dependency does not change, the newer versions should be `backwards compatible`.
+    - If our app uses version 4.99.175 of express in the future, then all code implemented in this part would still work without making changes to the code.
+    - Version 5.0.0 may contain changes that would make our app no longer work.
