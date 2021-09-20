@@ -338,3 +338,6 @@ npm run dev
 |notes/10|DELETE|removes the identified resource|
 |notes/10|PUT|replaces the entire identified resource with the request data|
 |notes/10|PATCH|replaces a part of the identified resource with the request data|
+
+- Uniform interface.
+    - A consistent way of defining interfaces that makes it possible for systems to operate.
