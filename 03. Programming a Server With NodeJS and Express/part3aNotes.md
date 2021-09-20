@@ -341,3 +341,83 @@ npm run dev
 
 - Uniform interface.
     - A consistent way of defining interfaces that makes it possible for systems to operate.
+
+## Fetching a Single Resource
+- Expand our app so it offers a REST interface for operating on individual notes.
+- Create a `route` for fetching a single resource.
+- Unique address we will use for an individual note is of the form `notes/10`, where the number is the identifier.
+- Define `parameters` in express using the colon syntax:
+```javascript
+app.get('/api/notes/:id', (request, response) => {
+    const id = request.params.id
+    const note  = notes.find(note => note.id === id)
+    response.json(note)
+})
+```
+- `app.get('/api/notes/:id', ...)` will handle all HTTP GET requests that are of the form `/api/notes/SOMETHING`, where `SOMETHING` is an abitrary string.
+- The `id` parameter in the route of a request can be accessed through the `request` object.
+```javascript
+const id = request.params.id
+```
+- The `find` method is used to find the note with an id that matches the parameter.
+- Note is then returned to the sender of the request.
+- When we first go to `http://localhost:3001/api/notes/1`, we see an empty page. Use console.log to see why.
+```javascript
+app.get('/api/notes/:id', (request, response) => {
+    const id = request.params.id
+    console.log(id)
+    const note  = notes.find(note => note.id === id)
+    console.log(note)
+    response.json(note)
+})
+```
+- We see that the `id` parameter is used.
+- The `note` is not found however.
+- Let's also add console.log inside the comparison function passed to the `find` method.
+```javascript
+app.get('/api/notes/:id', (request, response) => {
+    const id = request.params.id
+    const note  = notes.find(note => {
+        console.log(note.id, typeof note.id, id, typeof id, note.id === id)
+        return note.id === id
+    })
+    console.log(note)
+    response.json(note)
+})
+```
+- The output is the following
+```
+1 'number' '1' 'string' false
+2 'number' '2' 'string' false
+3 'number' '3' 'string' false
+```
+- The `id` variable contains a string. The ids of notes are integers.
+- The triple equals considers values of different types when comparing. So, 1 is not '1'.
+- Fix by changing the id from string to a number.
+```javascript
+app.get('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const note  = notes.find(note => note.id === id)
+    response.json(note)
+})
+```
+- Now it works.
+- There is another problem.
+- When looking for a note with an id that does not exist, server responds with HTTP status code 200.
+    - This means it succeeded.
+- The reason is that `note` variable is set to `undefined` if no matching note is found.
+- Handle it a better way. If no note is found, the server responds with status code 404 instead of 200.
+```javascript
+app.get('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const note  = notes.find(note => note.id === id)
+
+    if (note) {
+        response.json(note)
+    } else {
+        response.status(404).end()
+    }
+})
+```
+- No data is sent with response, so we use `status` method for setting status.
+- We use `end` method for responding to the request without sending any data.
