@@ -75,3 +75,84 @@ echo "Error: no test specified" && exit 1
 ```
 
 ## Simple Web Server
+- Change the application into a web server by editing the `index.js` file:
+```javascript
+const http = require('http')
+
+const app = http.createServer((request, response) => {
+    response.writeHead(200, { 'Content-Type': 'text/plain' })
+    response.end('Hello World')
+})
+
+const PORT = 3001
+app.listen(PORT)
+console.log(`Server running on port ${PORT}`)
+```
+- We can open our app by visiting `http://localhost:3001`.
+    - The page will display "Hello World".
+- Server works the same way regardless of the last part of the URL.
+    - `http://localhost:3001/foo/bar` displays the same content.
+- Take a closer look at the first line of code:
+```javascript
+const http = require('http')
+```
+- Application imports Node's built-in 'web server' module.
+- This is like what we did on our browser-side code.
+```javascript
+import http from 'http'
+```
+- Code that runs in the browser uses ES6 modules.
+- Modules defined using `export` and `import`.
+- NodeJS uses `CommonJS` modules.
+    - Reason is that Node ecosystem had a need for modules before JS supported them in the language specs.
+- CommonJS modules function almost exactly like ES6 modules.
+- The next chunk of code is:
+```javascript
+const app = http.createServer((request, response) => {
+    response.writeHead(200, { 'Content-Type': 'text/plain' })
+    response.end('Hello World')
+})
+```
+- Code uses the `createServer` method of the `http` module to create a new web server.
+- An `event handler` is registered to the server.
+    - Called every time an HTTP request is made to server's address `http://localhost:3001`.
+- Request is responded to with status code 200, Content-Type header set to text/plain, and content of the site to be returned set to Hello World.
+- The last rows make app listen on port that is defined.
+- Purpose of the backend server of this course is to offer raw data in the JSON format to the frontend.
+- Change server to return a hardcoded list of notes in the JSON format.
+```javascript
+const http = require('http')
+
+let notes = [
+    {
+        id: 1,
+        content: 'HTML is easy',
+        date: "2019-05-30T17:30:31.098Z",
+        important: true
+    },
+    {
+        id: 2,
+        content: 'Browser can execute only Javascript',
+        date: "2019-05-30T18:39:34.091Z",
+        important: false
+    },
+    {
+        id: 3,
+        content: 'GET and POST are the most important methods of HTTP protocol',
+        date: "2019-05-30T19:20:14.298Z",
+        important: true
+    },
+]
+
+const app = http.createServer((request, response) => {
+    response.writeHead(200, { 'Content-Type': 'application/json' })
+    response.end(JSON.stringify(notes))
+})
+
+const PORT = 3001
+app.listen(PORT)
+console.log(`Server running on port ${PORT}`)
+```
+- Restart server and refresh page.
+- `application/json` value in the `Content-Type` header tells the receiver that the data is in the JSON format.
+- The `notes` array gets transformed into JSON with `JSON.stringify(notes)` method.
