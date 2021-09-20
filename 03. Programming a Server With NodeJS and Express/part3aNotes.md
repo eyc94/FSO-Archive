@@ -329,6 +329,7 @@ npm run dev
 - URL for the entire collection of all note resources is `www.example.com/api/notes`.
 - Can execute different operations on resources.
     - Operation to be executed is defined by the HTTP `verb`.
+
 |URL|verb|functionality|
 |---|---|---|
 |notes/10|GET|fetches a single resource|
