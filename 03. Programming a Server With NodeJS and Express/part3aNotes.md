@@ -453,3 +453,13 @@ app.delete('/api/notes/:id', (request, response) => {
 - Go to `http://localhost:3001/notes` to see all the notes.
 - When you restart the backend server, the note comes back.
     - This is because the notes in the application are only saved to memory.
+
+## The Visual Studio Code REST Client
+- If you use VSCode, you can use the VS Code `REST client` plugin instead of Postman.
+- After installation, make directory at the root of application named `requests`.
+    - Save all the REST client requests in the directory as files that end with the `.rest` extension.
+- Create a new `get_all_notes.rest` file and define the request that fetches all notes.
+```
+GET http://localhost:3001/api/notes
+```
+- By clicking `Sent Request` text, the REST client will execute the HTTP request and response from the server is opened in the editor.
