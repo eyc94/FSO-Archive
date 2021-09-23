@@ -421,3 +421,19 @@ app.get('/api/notes/:id', (request, response) => {
 ```
 - No data is sent with response, so we use `status` method for setting status.
 - We use `end` method for responding to the request without sending any data.
+
+## Deleting Resources
+- Implement route for deleting resources.
+- Happens by making an HTTP DELETE request.
+```javascript
+app.delete('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id)
+    notes = notes.filter(note => note.id !== id)
+
+    response.status(204).end()
+})
+```
+- If deleting is successful, we respond to request with status code `204 no content` and return no data with the response.
+- No consensus on what status code to return when using DELETE on a resource that does not exist.
+    - Only two options are 204 and 404.
+    - For simplicity, use 204.
