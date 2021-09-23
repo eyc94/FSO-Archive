@@ -463,3 +463,9 @@ app.delete('/api/notes/:id', (request, response) => {
 GET http://localhost:3001/api/notes
 ```
 - By clicking `Sent Request` text, the REST client will execute the HTTP request and response from the server is opened in the editor.
+
+## The WebStorm HTTP Client
+- If you use `IntelliJ WebStorm`, you can use builtin HTTP Client.
+- Create new file with extension `.rest` and editor displays options to create and run your requests.
+- Follow this guide: `https://www.jetbrains.com/help/webstorm/http-client-in-product-code-editor.html`
+
