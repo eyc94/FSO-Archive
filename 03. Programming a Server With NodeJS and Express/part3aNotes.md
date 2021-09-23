@@ -437,3 +437,19 @@ app.delete('/api/notes/:id', (request, response) => {
 - No consensus on what status code to return when using DELETE on a resource that does not exist.
     - Only two options are 204 and 404.
     - For simplicity, use 204.
+
+## Postman
+- How do we test DELETE?
+- HTTP GET requests are easy to make from the browser.
+- We can write test code with JS for testing deletion, but it's not the best solution.
+- Many tools exist for making testing of backends easier.
+    - One is command line program `curl`.
+    - However, we look at `Postman`.
+- Install Postman.
+    - Can install it in Linux Software manager.
+- Go to Workspaces.
+- Make a DELETE request to `http://localhost:3001/api/notes/1`.
+    - This deletes the note with an id of 1.
+- Go to `http://localhost:3001/notes` to see all the notes.
+- When you restart the backend server, the note comes back.
+    - This is because the notes in the application are only saved to memory.
