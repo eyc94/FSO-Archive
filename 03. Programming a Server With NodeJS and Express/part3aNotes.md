@@ -469,3 +469,130 @@ GET http://localhost:3001/api/notes
 - Create new file with extension `.rest` and editor displays options to create and run your requests.
 - Follow this guide: `https://www.jetbrains.com/help/webstorm/http-client-in-product-code-editor.html`
 
+## Receiving Data
+- Make it possible to add new notes to server.
+- Use HTTP POST request to address `http://localhost:3001/api/notes`.
+- Send all information for the new note in the request body in the JSON format.
+- To access data easily, we need help of the express `json-parser`.
+    - Use with command `app.use(express.json())`.
+- Activate json-parser and implement initial handler for dealing with the HTTP POST requests.
+```javascript
+const express = require('express')
+const app = express()
+
+// ...
+
+app.post('/api/notes', (request, response) => {
+    const note = request.body
+    console.log(note)
+    response.json(note)
+})
+```
+- Event handler function can access data from the `body` property of the `request` object.
+- Without json-parser, the `body` property is undefined.
+    - json-parser takes the JSON data of a request, transforms it to JS object and attaches it to the `body` property of the `request` object before the route handler is called.
+- The app just prints the received data to the console and sends it back in the response.
+- Before proceeding, verify with Postman that data is actually received by the server.
+    - Define URL, request type, define the data sent in the `body`.
+    - Below is the data sent.
+```json
+{
+    "content": "Postman is a good tool for testing REST apis",
+    "important": true
+}
+```
+- App will print the data we sent in the console.
+- If you use VSCode REST plugin, you can send POST request with the REST client like this:
+```
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "Postman is a good tool for testing REST apis",
+    "important": true
+}
+```
+- The above is in a file called `create_note.rest`.
+- Can add multiple requests in the same file using `###`.
+```
+GET http://localhost:3001/api/notes/
+
+###
+POST http://localhost:3001/api/notes/ HTTP/1.1
+Content-Type: application/json
+
+{
+    "content": "Postman is a good tool for testing REST apis",
+    "important": true
+}
+```
+- When debugging, you can find out what headers have been set in the HTTP request.
+- Use `get` method of the `request` object which can be used to get a value of single header.
+- `request` object also has `headers` property containing all headers of a specific request.
+- You can spot the missing `Content-Type` header if at a point in your code you print all of the request headers with `console.log(request.headers)`.
+- Go back to app.
+- Once app receives data correctly, we finalize the handling of the request:
+```javascript
+app.post('/api/notes', (request, response) => {
+    const maxId = notes.length > 0
+        ? Math.max(...notes.map(n => n.id))
+        : 0
+    
+    const note = request.body
+    note.id = maxId + 1
+
+    notes = notes.concat(note)
+
+    response.json(note)
+})
+```
+- Need an ID for the new note.
+- Grab the max id of the current notes list.
+- The note that we are adding has an id of `maxId + 1`.
+- This method not recommended.
+- The POST request has a problem that we can add objects with any number of properties.
+- Define that the `content` property may not be empty.
+- The `important` and `date` properties will be given default values.
+- All other properties discarded.
+```javascript
+const generateId = () => {
+    const maxId = notes.length > 0
+        ? Math.max(...notes.map(n => n.id))
+        : 0
+    return maxId + 1
+}
+
+app.post('/api/notes', (request, response) => {
+    const body = request.body
+
+    if (!body.content) {
+        return response.status(400).json({
+            error: 'content missing'
+        })
+    }
+
+    const note = {
+        content: body.content,
+        important: body.important || false,
+        date: new Date(),
+        id: generateId(),
+    }
+
+    notes = notes.concat(note)
+
+    response.json(note)
+})
+```
+- Generating ID logic is in a separate function now.
+- If received data is missing a value for `content` property, server will respond with status code `400 bad request`.
+- Calling `return` is important because if we didn't, the bad note will get added to application.
+- Generation of date is now done by server.
+- If important is missing, it will default to `false`.
+- What is happening in our ID generating function?
+```javascript
+Math.max(...notes.map(n => n.id))
+```
+- The `notes.map(n => n.id)` creates a new array that contains all the ids of the notes.
+- `Math.max` returns the max value of the numbers that are passed to it.
+- However, `notes.map(n => n.id)` is an `array` so it can't directly be given as a parameter to `Math.max`.
+- The array can be transformed into individual numbers by using the "three dot" `spread` syntax `...`.
