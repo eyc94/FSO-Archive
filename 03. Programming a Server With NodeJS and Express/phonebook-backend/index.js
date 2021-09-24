@@ -1,11 +1,21 @@
 const express = require('express')
+// Require morgan middleware: https://github.com/expressjs/morgan
+const morgan = require('morgan')
 const app = express()
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
 }
 
+// Create a token to display payload.
+// Payload is displayed when we make a POST request to add a person.
+morgan.token('payload', (req, res) => {
+    return JSON.stringify(req.body)
+})
+
 app.use(express.json())
+// Use the morgan middleware tiny configuration with the payload token at the end.
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :payload'))
 
 let persons = [
     {
