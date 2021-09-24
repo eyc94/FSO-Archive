@@ -7,6 +7,13 @@ const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
 }
 
+// This is PART 3.7.
+// app.use(morgan('tiny'))
+// OR 
+// app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+
+// This is PART 3.8.
+// PART 3.8 required me to show payload when making POST requests.
 // Create a token to display payload.
 // Payload is displayed when we make a POST request to add a person.
 morgan.token('payload', (req, res) => {
