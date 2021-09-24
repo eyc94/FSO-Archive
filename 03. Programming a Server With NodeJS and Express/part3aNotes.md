@@ -596,3 +596,24 @@ Math.max(...notes.map(n => n.id))
 - `Math.max` returns the max value of the numbers that are passed to it.
 - However, `notes.map(n => n.id)` is an `array` so it can't directly be given as a parameter to `Math.max`.
 - The array can be transformed into individual numbers by using the "three dot" `spread` syntax `...`.
+
+## About HTTP Request Types
+- `HTTP standard` mentions two properties related to request types.
+    - `safety` and `idempotence`.
+- HTTP GET request should be `safe`:
+    - In particular, the convention has been established that the GET and HEAD methods SHOULD NOT have the significance of taking an action other than retrieval. These methods ought to be considered "safe".
+- Safety means executing request must not cause `side effects` in the server.
+    - State of database must not change as a result of the request.
+    - Response must only return data that already exists on the server.
+- Nothing can guarantee a GET request is `safe`.
+- Just a recommendation defined in the HTTP standard.
+- Adhering to RESTful principles in our API makes GET requests used in a `safe` way.
+- HTTP standard defines the request type `HEAD` to be safe.
+- `HEAD` works exactly like `GET` but it does not return anything but the status code and response headers.
+    - Response body will not be returned when you make a `HEAD` request.
+- All HTTP requests except POST should be `idempotent`:
+    - Methods can also have the property "idempotence" in that (aside from error or expiration issues) the side-effects of N > 0 identical requests is the same as for a single request. The methods GET, HEAD, PUT, and DELETE share this property.
+- If a request has side-effects, the result should be same regardless of how many times the request is sent.
+- `idempotence` is also just a recommendation in the HTTP standard and not to be guaranteed based on the request type.
+    - When our API adheres to RESTful principles, then GET, HEAD, PUT, and DELETE requests are used in a way they are idempotent.
+- POST is neither `safe` nor `idempotent`.
