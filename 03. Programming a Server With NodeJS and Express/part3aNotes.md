@@ -617,3 +617,40 @@ Math.max(...notes.map(n => n.id))
 - `idempotence` is also just a recommendation in the HTTP standard and not to be guaranteed based on the request type.
     - When our API adheres to RESTful principles, then GET, HEAD, PUT, and DELETE requests are used in a way they are idempotent.
 - POST is neither `safe` nor `idempotent`.
+
+## Middleware
+- The express `json-parser` we used is called `middleware`.
+- Middleware are functions that can be used to handle `request` and `response` objects.
+- `json-parser` takes raw data from the requests that's stored in the `request` object, parses it to JS object, and assigns it to the `request` object as a new property `body`.
+- Can have multiple middleware at the same time.
+    - If you have more than one, they're executed one by one in the order that they were taken into use in express.
+- Implement our own middleware that prints information about every request that is sent to the server.
+- Middleware is a function that receives three parameters:
+```javascript
+const requestLogger = (request, response, next) => {
+    console.log('Method:', request.method)
+    console.log('Path:  ', request.path)
+    console.log('Body:  ', request.body)
+    console.log('---')
+    next()
+}
+```
+- At end of function, the `next` function is called.
+    - This yields control to the next middleware.
+- Middleware is taken to use like:
+```javascript
+app.use(requestLogger)
+```
+- Middleware functions are called in the order that they're used with express server object's `use` method.
+- `json-parser` is taken into use before `requestLogger` because otherwise `request.body` will not be initialized when the logger is executed!
+- Middleware functions have to be taken into use before routes if we want them to be executed before the route event handlers are called.
+- There are times we use middleware functions after routes. This means that we are defining middleware functions that are called if no route handles the HTTP request.
+- Add the following middleware after our routes used to catch requests made to non-existent routes.
+    - Middleware returns an error message in the JSON format.
+```javascript
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+```
