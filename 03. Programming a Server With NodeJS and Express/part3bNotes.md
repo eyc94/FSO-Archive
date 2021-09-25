@@ -1,5 +1,7 @@
 # Deploying App To Internet
 - Connect frontend we made in part 2 to our own backend.
+    - Start server from part3a.
+    - Start app from part2e (now copied into part3b).
 - In the previous part, the frontend asked for the list of notes from the `json-server` we had as a backend.
     - The address was `http://localhost:3001/notes`.
 - Backend has different URL structure now.
