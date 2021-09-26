@@ -168,3 +168,18 @@ const getAll = () => {
 - When browser goes to the page, `index.html` is rendered.
 - This causes the browser to get the product version of the React app.
 - Once it starts to run, it fetches the json-data from the address localhost:3001/api/notes.
+
+## The Whole App To Internet
+- After making sure the production version of the apps works locally, commit production build of frontend to the backend repo.
+- Push the code to Heroku again.
+- App works great but changing the importance of notes still needs to be fixed.
+- Our app saves notes to variable.
+    - If app crashes or restarts, all data disappears.
+    - App needs database.
+- Go through a few things before introducing database.
+- Setup is now this:
+
+![alt text](https://github.com/eyc94/Full-Stack-Open/blob/master/images/heroku_deployment.png "Setup after heroku deployment")
+
+- The `node/express-backend` now resides in Heroku server.
+- When the root address that is of the form `https://<name of app>.herokuapp.com/` is accessed, browser loads and executes the React app that fetches the json-data from the Heroku server.
