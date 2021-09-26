@@ -51,3 +51,5 @@ app.use(cors())
 - Setup of app is now:
 
 ![alt text](https://github.com/eyc94/Full-Stack-Open/blob/master/images/frontend_backend_diagram.png "Frontend and backend setup diagram")
+
+- React app that runs in the browser fetches the data from node/express-server that is running in localhost:3001.
