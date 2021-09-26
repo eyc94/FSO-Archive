@@ -22,3 +22,4 @@ export default { getAll, create, update }
 ```
 - The frontend's GET request now does not work for some reason.
 - Some errors in console about CORS policy.
+- So what's going on? We can still access backend in the browser and from Postman without problems.
