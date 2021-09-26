@@ -59,3 +59,30 @@ app.use(cors())
 - Move application to the internet.
 - We will use `Heroku` for this.
     - Heroku documentation: `https://devcenter.heroku.com/articles/getting-started-with-nodejs`
+- Add a file called `Procfile` to the project's root to tell Heroku how to start the app.
+```
+web: npm start
+```
+- Change definition of the port our app uses at the bottom of the `index.js` file:
+```javascript
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+})
+```
+- We are using the port defined in `environment variable` `PORT` or port 3001 if `PORT` is undefined.
+- Heroku configures app port based on environment variable.
+- Create Git repo and add `.gitignore` with:
+```
+node_modules
+```
+- Create Heroku app with `heroku create`.
+- Commit your code to the repo and move it to Heroku with `git push heroku main`.
+- App should work if everything went well.
+- If not, issue can be found by reading heroku logs with `heroku logs`.
+    - Best way is `heroku logs -t` which prints logs to console whenever something happens on the server.
+- If you are deploying from a git repo where your code is not on the main branch (i.e. if you are altering the notes repo from last lesson) you will need to run `git push heroku HEAD:master`.
+- If you have already done a push to heroku, you may need to run `git push heroku HEAD:main --force`.
+- Frontend works with backend on Heroku.
+    - Check by changing backend's address on the frontend to be the backend's address in Heroku instead of `http://localhost:3001`.
+- How do we deploy frontend to internet? We have a lot of options and we will go through one of them next.
