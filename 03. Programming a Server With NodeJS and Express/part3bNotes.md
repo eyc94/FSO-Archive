@@ -183,3 +183,28 @@ const getAll = () => {
 
 - The `node/express-backend` now resides in Heroku server.
 - When the root address that is of the form `https://<name of app>.herokuapp.com/` is accessed, browser loads and executes the React app that fetches the json-data from the Heroku server.
+
+## Streamlining Deploying of the Frontend
+- Make it easier to make a new production build without manual work with `npm scripts`.
+- Add some to the `package.json` file of the backend repo:
+```json
+{
+    "scripts": {
+        // ...
+        "build:ui": "rm -rf build && cd <path_to_frontend> && npm run build --prod && cp -r build <path_to_backend>",
+        "deploy": "git push heroku master",
+        "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+        "logs:prod": "heroku logs --tail"
+    }
+}
+```
+- Directory paths in `build:ui` depend on the location of the repo in the file system.
+- `npm run build:ui` builds the frontend and copies it over to the backend repo.
+- `npm run deploy` pushes the changes to the heroku repo remote.
+- `npm run deploy:full` combines the two above and does it in one full sweep.
+- `npm run logs:prod` shows the heroku logs.
+- On Windows, npm scripts are executed in `cmd.exe` as default shell does not support bash commands.
+- For them to work, change the default shell to Bash:
+```
+npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
+```
