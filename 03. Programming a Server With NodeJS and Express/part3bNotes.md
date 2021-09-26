@@ -53,3 +53,9 @@ app.use(cors())
 ![alt text](https://github.com/eyc94/Full-Stack-Open/blob/master/images/frontend_backend_diagram.png "Frontend and backend setup diagram")
 
 - React app that runs in the browser fetches the data from node/express-server that is running in localhost:3001.
+
+## Application To The Internet
+- Our whole stack is ready.
+- Move application to the internet.
+- We will use `Heroku` for this.
+    - Heroku documentation: `https://devcenter.heroku.com/articles/getting-started-with-nodejs`
