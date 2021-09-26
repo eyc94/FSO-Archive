@@ -49,4 +49,5 @@ app.use(cors())
     - Read more about CORS: `https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS`
     - Read GitHub on cors middleware: `https://github.com/expressjs/cors`
 - Setup of app is now:
+
 ![alt text](https://github.com/eyc94/Full-Stack-Open/blob/master/images/frontend_backend_diagram.png "Frontend and backend setup diagram")
