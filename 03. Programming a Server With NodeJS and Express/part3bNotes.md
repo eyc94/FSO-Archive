@@ -86,3 +86,22 @@ node_modules
 - Frontend works with backend on Heroku.
     - Check by changing backend's address on the frontend to be the backend's address in Heroku instead of `http://localhost:3001`.
 - How do we deploy frontend to internet? We have a lot of options and we will go through one of them next.
+
+## Frontend Production Build
+- We have been running React code in `development mode`.
+    - Here, the app is configured to give clear error messages, immediately render code changes to the browser, and so on.
+- When app is deployed, we must create a `production build` or a version of the app that is optimized for production.
+- Production build of apps created with `create-react-app` can be created with `npm run build`.
+- Run this command from root of frontend project.
+- This creates a folder called `build`.
+    - This contains the only HTML file of our application: `index.html`.
+    - This folder contains another folder called `static`.
+    - `Minified` version of our app's JS code will be generated to the `static` directory.
+        - `Minified` means process of removing all unnecessary characters from the source code without changing functionality.
+    - Even though the application code is in multiple files, all JS will be minified into one file.
+    - All code from all of the app's dependencies will also be minified into this single file.
+    - Minified code note very readable.
+    - Beginning of code looks like below:
+```javascript
+!function(e){function r(r){for(var n,f,i=r[0],l=r[1],a=r[2],c=0,s=[];c<i.length;c++)f=i[c],o[f]&&s.push(o[f][0]),o[f]=0;for(n in l)Object.prototype.hasOwnProperty.call(l,n)&&(e[n]=l[n]);for(p&&p(r);s.length;)s.shift()();return u.push.apply(u,a||[]),t()}function t(){for(var e,r=0;r<u.length;r++){for(var t=u[r],n=!0,i=1;i<t.length;i++){var l=t[i];0!==o[l]&&(n=!1)}n&&(u.splice(r--,1),e=f(f.s=t[0]))}return e}var n={},o={2:0},u=[];function f(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,f),t.l=!0,t.exports}f.m=e,f.c=n,f.d=function(e,r,t){f.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},f.r=function(e){"undefined"!==typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"})
+```
