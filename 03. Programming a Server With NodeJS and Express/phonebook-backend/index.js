@@ -1,6 +1,7 @@
 const express = require('express')
 // Require morgan middleware: https://github.com/expressjs/morgan
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 const unknownEndpoint = (request, response) => {
@@ -23,6 +24,7 @@ morgan.token('payload', (req, res) => {
 app.use(express.json())
 // Use the morgan middleware tiny configuration with the payload token at the end.
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :payload'))
+app.use(cors())
 
 let persons = [
     {
