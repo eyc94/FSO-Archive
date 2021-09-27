@@ -208,3 +208,38 @@ const getAll = () => {
 ```
 npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
 ```
+
+## Proxy
+- Changes on frontend caused it to no longer work when in development mode (started with `npm start`).
+- This is because connection to backend does not work.
+- On `http://localhost:3000`, you see no notes.
+- This is due to changing the baseUrl to a relative URL:
+```javascript
+const baseUrl = '/api/notes'
+```
+- In development mode, the frontend is at the address `localhost:3000`.
+- The requests to the backend go to the wrong address `localhost:3001/api/notes`.
+- The backend is at `localhost:3001`.
+- If the project was created with `create-react-app`, this is solved easily by add to the `package.json` file in the frontend repo:
+```json
+{
+    "dependencies": {
+        // ...
+    },
+    "scripts": {
+        // ...
+    },
+    "proxy": "http://localhost:3001"
+}
+```
+- After restarting, the React development environment will work as a `proxy`.
+    - If the React code does an HTTP request to a server address at `http://localhost:3000` not managed by React app itself (i.e. when requests are not about fetching CSS or JS of the app), the request will be redirected to the server at `http://localhost:3001`.
+- Frontend is now fine working in both the development and production mode.
+- It is now complicated to deploy frontend.
+    - Deploying new version requires making new production build of the frontend and copying to backend repo.
+    - This makes creating an automated `deployment pipeline` more difficult.
+        - Deployment pipeline means an automated and controlled way to move the code from the computer of the developer through different tests and quality checks to the production environment.
+    - Multiple ways to achieve.
+    - We can place both backend and frontend in one repo.
+    - We can deploy frontend as its own application.
+        - Straightforward with apps created with `create-react-app`.
