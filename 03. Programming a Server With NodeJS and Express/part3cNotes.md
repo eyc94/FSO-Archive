@@ -26,3 +26,8 @@ node --inspect index.js
     - Postman, debuggers, and experience helps.
 - Worst strategy is to continue writing code.
 - Stop and fix.
+
+## MongoDB
+- We need a database to store notes indefinitely.
+- Most courses use relational databases.
+- We use MongoDB (called `document database`).
