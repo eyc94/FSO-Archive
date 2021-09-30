@@ -1,10 +1,31 @@
 const express = require('express')
 const cors = require('cors')
+const mongoose = require('mongoose')
 const app = express()
 
 app.use(express.json())
 app.use(express.static('build'))
 app.use(cors())
+
+const url = `mongodb+srv://sample_user_1:Coding260312%21@first-example.5nttp.mongodb.net/note-app?retryWrites=true&w=majority`
+
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+    content: String,
+    date: Date,
+    important: Boolean,
+})
+
+noteSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString()
+        delete returnedObject._id
+        delete returnedObject.__v
+    }
+})
+
+const Note = mongoose.model('Note', noteSchema)
 
 let notes = [
     {
@@ -70,7 +91,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/notes', (request, response) => {
-    response.json(notes)
+    Note.find({}).then(notes => {
+        response.json(notes)
+    })
 })
 
 app.delete('/api/notes/:id', (request, response) => {
