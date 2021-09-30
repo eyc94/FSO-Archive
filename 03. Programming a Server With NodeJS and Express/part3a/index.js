@@ -7,7 +7,7 @@ app.use(express.json())
 app.use(express.static('build'))
 app.use(cors())
 
-const url = `mongodb+srv://sample_user_1:Coding260312%21@first-example.5nttp.mongodb.net/note-app?retryWrites=true&w=majority`
+const url = `mongodb+srv://sample_user_1:${password}@first-example.5nttp.mongodb.net/note-app?retryWrites=true&w=majority`
 
 mongoose.connect(url)
 
