@@ -31,3 +31,124 @@ node --inspect index.js
 - We need a database to store notes indefinitely.
 - Most courses use relational databases.
 - We use MongoDB (called `document database`).
+    - `https://www.mongodb.com/`
+- Document databases differ from relational databases in how they organize data and the query languages they support.
+- Usually categorized under the `NoSQL` term.
+- Read chapter on `collections`.
+    - `https://docs.mongodb.com/manual/core/databases-and-collections/`.
+    - MongoDB stores data records as `documents` (specifically `BSON` documents) which are gathered together in `collections`.
+    - Database stores one or more collections of documents.
+    - A `document` is a record in a MongoDB `collection` and the basic unit of data in MongoDB.
+    - Documents are analogous to JSON objects but exist in the database in a more type-rich format known as `BSON`.
+    - `BSON` is a serialization format used to store documents and make remote procedure calls in MongoDB.
+        - BSON is a binary representation of JSON.
+- Read chapter on `documents`.
+    - `https://docs.mongodb.com/manual/core/document/`.
+    - MongoDB stores data records as BSON documents.
+    - BSON contains more data types than JSON.
+    - MongoDB documents are composed of field-and-value pairs and have the following structure:
+    ```bson
+        field1: value1,
+        field2: value2,
+        field3: value3,
+        ...
+        fieldN: valueN
+    ```
+    - Value of field can be any of BSON data types.
+        - This includes other documents, arrays, arrays of documents.
+- Naturally, you can install and run MongoDB on your own computer.
+- However, internet is full of Mongo database services that you can use.
+- Preferred MongoDB provider in this course is `MongoDB Atlas`.
+    - Link: `https://www.mongodb.com/cloud/atlas`.
+- After creating account and logging in, Atlas recommends creating a cluster (or create database for newer versions).
+    - Create a Shared Cluster.
+    - Choose AWS as provider.
+    - Choose Oregon as region.
+    - Create cluster. (This process will take a few minutes to finish).
+- Use `database access` tab for creating user credentials for the database.
+    - Not the same as when you're logging in to MongoDB Atlas.
+    - These will be used for your app to connect to the database.
+    - Authentication Method is **Password**.
+    - Enter a username and password.
+    - Allow to **Read and write to any database**.
+- Define the IP addresses that are allowed access to the database.
+    - Go to `Network Access`.
+    - Click on `Add IP Address`.
+    - For simplicity, we will allow access from all IP address by clicking on `Allow Access From Anywhere`.
+- Go back to the `Databases` tab and click `Connect`.
+    - Choose `Connect your application`.
+    - The view now shows the `MongoDB URI`, which is the address of the database that we will supply to the MongoDB client library we will add to our app.
+    - Address looks like: `mongodb+srv://fullstack:<PASSWORD>@cluster0-ostce.mongodb.net/test?retryWrites=true`
+- We are ready to use database.
+- Could use database directory from our JS code with the `official MongoDB Node.js driver` library.
+    - Very cumbersome.
+- We instead use `Mongoose` library that offers higher level API.
+    - `Mongoose` is an `object document mapper (ODM)`.
+    - Saving JS objects as Mongo documents is straightforward with this library.
+- Install Mongoose:
+```
+npm install mongoose
+```
+- Let's not add code dealing with Mongo to backend just yet.
+- Let's make a practice application by creating a new file `mongo.js`.
+```javascript
+const mongoose = require('mongoose')
+
+if (process.argv.length < 3) {
+    console.log('Please provide the password as an argument: node mongo.js <password>')
+    process.exit(1)
+}
+
+const password = process.argv[2]
+
+const url = `mongodb+srv://sample_user_1:${password}@first-example.5nttp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+    content: String,
+    date: Date,
+    important: Boolean,
+})
+
+const Note = mongoose.model('Note', noteSchema)
+
+const note = new Note({
+    content: 'HTML is Easy',
+    date: new Date(),
+    important: true,
+})
+
+note.save().then(result => {
+    console.log('note saved!')
+    mongoose.connection.close()
+})
+```
+- The MongoDB URI may be different from the example depending on region and whatnot.
+- Code assumes the password will be passed as command line parameter.
+- This password was the credentials we created in MongoDB Atlas.
+- Access the parameter like:
+```javascript
+const password = process.argv[2]
+```
+- Mongo will add a new document to the database.
+- If you created password with special characters, you need to `URL encode` that password.
+    - For example, '!' becomes '%21'.
+- View current state of database from the MongoDB Atlas from `Collections` in the `Overview` tab.
+- As view shows, the `document` matching the note has been added to the `notes` collection in the `myFirstDatabase` database.
+- We can give our database a better name.
+- We can change the name of database from the URI:
+```
+mongodb+srv://sample_user_1:<password>@first-example.5nttp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+```
+- Replace the `myFirstDatabase` above with the new name.
+- Destroy `myFirstDatabase`.
+- Change name of database to `note-app` instead.
+```
+mongodb+srv://sample_user_1:<password>@first-example.5nttp.mongodb.net/note-app?retryWrites=true&w=majority
+```
+- Run code again.
+- Data is now in the right database.
+- There is the `Create Database` functionality to create new databases from the website.
+    - This is not necessary.
+    - MongoDB Atlas automatically creates a new database when an app tries to connect to a database that does not exist yet.
