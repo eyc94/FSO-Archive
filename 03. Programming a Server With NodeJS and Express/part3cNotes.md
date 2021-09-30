@@ -152,3 +152,24 @@ mongodb+srv://sample_user_1:<password>@first-example.5nttp.mongodb.net/note-app?
 - There is the `Create Database` functionality to create new databases from the website.
     - This is not necessary.
     - MongoDB Atlas automatically creates a new database when an app tries to connect to a database that does not exist yet.
+
+## Schema
+- After making connection to database, we define `schema` for a note and the matching `model`.
+```javascript
+const noteSchema = new mongoose.Schema({
+    content: String,
+    date: Date,
+    important: Boolean,
+})
+
+const Note = mongoose.model('Note', noteSchema)
+```
+- We first define the `schema` of a note stored in the `noteSchema` variable.
+- The schema tells Mongoose how the note objects are stored in the database.
+- In the `Note` model definition, the first "Note" parameter is the singular name of the model.
+- Name of the collection will be the lowercased plural `notes`.
+    - Mongoose convention is to automatically name collections as the plural (notes) when the schema refers to them in the singular (Note)
+- Document databases like Mongo are `schemaless`.
+    - Database does not care about the structure of the data that is stored in the database.
+    - Can store documents with completely different fields in the same collection.
+- Idea behind Mongoose is that data stored in the database is given a `schema at the level of the app` that defines the shape of the documents stored in any given collection.
