@@ -201,3 +201,25 @@ note.save().then(result => {
 - The `result` parameter of event handler is not that interesting when we're storing one object to database.
     - Can print it to see what it looks like though.
 - Save a few more notes by modifying the data in code and executing the program again.
+
+## Fetching Objects From The Database
+- Comment code for generating new notes and replace with:
+```javascript
+Note.find({}).then(result => {
+    result.forEach(note => {
+        console.log(note)
+    })
+    mongoose.connection.close()
+})
+```
+- When code is executed, program prints all the notes stored in the database.
+- Objects are retrieved from the database with the `find` method of the `Note` model.
+- Parameter of the method is an object expressing search conditions.
+- Since parameter is an empty object `{}`, we get all of the notes stored in the `notes` collection.
+- Search conditions adhere to Mongo search query `syntax`.
+- We could restrict our search to only include important notes like:
+```javascript
+Note.find({ important: true }).then(result => {
+    // ...
+})
+```
