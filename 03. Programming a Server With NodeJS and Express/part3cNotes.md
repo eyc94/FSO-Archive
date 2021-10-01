@@ -466,7 +466,9 @@ app.get('/api/notes/:id', (request, response) => {
         })
         .catch(error => {
             console.log(error)
-            response.status(400).send({ error: 'malformed id' })
+            response.status(400).send({ error: 'malformatted id' })
         })
 })
 ```
+- If format of id is incorrect, we end up in error handler defined in `catch` block.
+- Status code is 400 Bad Request.
