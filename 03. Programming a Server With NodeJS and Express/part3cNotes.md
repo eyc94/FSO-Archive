@@ -545,3 +545,44 @@ app.use(errorHandler)
 ```
 - The json-parser middleware should be among the very first middleware loaded into Express
 - Important that the middleware for handling unsupported routes is next to last middleware loaded into Express, just before error handler.
+
+## Other Operations
+- Add deleting and updating an individual note functionality.
+- Easiest way to delete a note from the database is the `findByIdAndRemove` method:
+```javascript
+app.delete('/api/notes/:id', (request, response, next) => {
+    Note.findByIdAndRemove(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
+})
+```
+- In both cases of deleting resource (successful), backend responds with status code 204 no content.
+- Two cases are deleting a note that exists and deleting a note that does not exist.
+- `result` callback can be used for checking if resource was actually deleted.
+- Toggling of importance of a note can be easily accomplished with `findByIdAndUpdate` method:
+```javascript
+app.put('/api/notes:id', (request, response, next) => {
+    const body = request.body
+
+    const note = {
+        content: body.content,
+        important: body.important,
+    }
+
+    Note.findByIdAndUpdate(request.params.id, note, { new: true })
+        .then(updatedNote => {
+            response.json(updatedNote)
+        })
+        .catch(error => next(error))
+})
+```
+- In code above, we allow content of note to be edited.
+- We do not support changing creation date.
+- `findByIdAndUpdate` method receives a regular JS object as its parameter and not a new note object created with the `Note` constructor function.
+- One important detail:
+    - The `updatedNote` parameter receives the original document **without modifications**.
+    - We added the optional `{ new: true }` parameter which causes our event handler to be called with new modified document instead of original.
+- Test with Postman.
+- Test with Frontend with Backend using database.
