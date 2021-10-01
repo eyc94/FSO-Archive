@@ -89,7 +89,7 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if (!body.name) {
+    if (body.name === undefined) {
         return response.status(400).json({
             error: 'name missing'
         })
@@ -101,21 +101,21 @@ app.post('/api/persons', (request, response) => {
         })
     }
 
-    if (!body.number) {
+    if (body.number === undefined) {
         return response.status(400).json({
             error: 'number missing'
         })
     }
 
-    const person = {
+    const person = new Person({
         id: Math.floor(Math.random() * 99999),
         name: body.name,
         number: body.number
-    }
+    })
 
-    persons = persons.concat(person)
-
-    response.json(person)
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 app.use(unknownEndpoint)
