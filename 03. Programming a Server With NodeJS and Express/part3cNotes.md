@@ -472,3 +472,45 @@ app.get('/api/notes/:id', (request, response) => {
 ```
 - If format of id is incorrect, we end up in error handler defined in `catch` block.
 - Status code is 400 Bad Request.
+
+## Moving Error Handling Into Middleware
+- Sometimes better to implement all error handling in a single place.
+- Change the handler for the `/api/notes/:id` route so that it passes the error forward with the `next` function.
+- `next` function is passed to handler as third parameter.
+```javascript
+app.get('/api/notes/:id', (request, response, next) => {
+    Note.findById(request.params.id)
+        .then(note => {
+            if (note) {
+                response.json(note)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => next(error))
+})
+```
+- Error that is passed forwards is given to `next` function as a parameter.
+- If `next` was called with no parameter, then execution moves onto the next route or middleware.
+- If the `next` was called with a parameter, then the execution will continue to the `error handler middleware`.
+- Express `error handlers` are middleware that are defined with a function that accepts four parameters.
+- Error handler looks like:
+```javascript
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+    
+    next(error)
+}
+
+// This has to be the last loaded middleware.
+app.use(errorHandler)
+```
+- Error handler checks if error is a `CastError` exception.
+    - We know that the error was caused by an invalid object id for Mongo.
+- Error handler will send a response to the browser with the response object passed as a parameter.
+- In all other error situations, the middleware passes the error forward to the default Express error handler.
+- Error handling middleware must be last to be loaded.
