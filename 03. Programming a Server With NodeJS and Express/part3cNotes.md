@@ -514,3 +514,34 @@ app.use(errorHandler)
 - Error handler will send a response to the browser with the response object passed as a parameter.
 - In all other error situations, the middleware passes the error forward to the default Express error handler.
 - Error handling middleware must be last to be loaded.
+
+## The Order Of Middleware Loading
+- Execution order of middleware is the same as the order they are loaded into express with the `app.use` function.
+- It is important to be careful when definining middleware.
+- Correct order:
+```javascript
+app.use(express.static('build'))
+app.use(express.json())
+app.use(requestLogger)
+
+app.post('/api/notes', (request, response) => {
+    const body = request.body
+    // ...
+})
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// Handler of requests with unknown endpoint.
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    // ...
+}
+
+// Handler of requests with result to errors.
+app.use(errorHandler)
+```
+- The json-parser middleware should be among the very first middleware loaded into Express
+- Important that the middleware for handling unsupported routes is next to last middleware loaded into Express, just before error handler.
