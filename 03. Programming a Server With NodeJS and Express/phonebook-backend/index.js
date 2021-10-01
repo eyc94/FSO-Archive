@@ -2,7 +2,27 @@ const express = require('express')
 // Require morgan middleware: https://github.com/expressjs/morgan
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
 const app = express()
+
+const url = `mongodb+srv://sample_user_1:Coding260312%21@phonebook.zg0cb.mongodb.net/phonebook-app?retryWrites=true&w=majority`
+
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+    name: String,
+    number: String,
+})
+
+const Person = mongoose.model('Person', personSchema)
+
+personSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString()
+        delete returnedObject._id
+        delete returnedObject.__v
+    }
+})
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
@@ -55,7 +75,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({}).then(persons => {
+        response.json(persons)
+    })
 })
 
 app.get('/info', (request, response) => {
