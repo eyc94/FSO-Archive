@@ -413,3 +413,13 @@ app.get('/api/notes/:id', (request, response) => {
     })
 })
 ```
+
+## Verifying Frontend and Backend Integration
+- Good idea to test backend first with the browser, Postman or VS Code REST Client.
+- Try to create a new note.
+- Next, it is a good idea to test that the frontend works with the backend.
+- Highly inefficient to test things exclusively through the frontend.
+- Integrate frontend and backend one functionality at a time.
+- First, test fetching of all the notes from the database and test it through the backend endpoint in the browser.
+- Next, verify the frontend works with new backend.
+- Then, we move on to the next feature.
