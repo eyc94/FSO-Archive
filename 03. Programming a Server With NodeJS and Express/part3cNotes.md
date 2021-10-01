@@ -423,3 +423,50 @@ app.get('/api/notes/:id', (request, response) => {
 - First, test fetching of all the notes from the database and test it through the backend endpoint in the browser.
 - Next, verify the frontend works with new backend.
 - Then, we move on to the next feature.
+
+## Error Handling
+- When visiting the URL of a note with an id that does not actually exist, the response is `null`.
+- Change behavior so if note with id does not exist, the server responds to request with the HTTP status code 404 not found.
+- Implement a simple `catch` block to handle cases where the promise returned by the `findById` method is rejected.
+```javascript
+app.get('/api/notes/:id', (request, response) => {
+    Note.findById(request.params.id)
+        .then(note => {
+            if (note) {
+                response.json(note)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(500).end()
+        })
+})
+```
+- If no matching object is found in the database, the value of `note` will be `null` and `else` block is executed.
+    - Results in response with status code 404 not found.
+    - If promise returned by `findById` is rejected, response will have the status code 500 internal server error.
+    - Console shows more detail about error.
+- We have one more error situation.
+- We are trying to fetch a note with a wrong kind of `id`.
+    - This means that an `id` that does not match the mongo identifier format.
+- Given malformed id as an argument, the `findById` method throws an error causing the returned promise to be rejected.
+- This causes the callback function in `catch` block to be called.
+- Make adjustment to `catch` block:
+```javascript
+app.get('/api/notes/:id', (request, response) => {
+    Note.findById(request.params.id)
+        .then(note => {
+            if (note) {
+                response.json(note)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            response.status(400).send({ error: 'malformed id' })
+        })
+})
+```
