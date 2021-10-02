@@ -70,33 +70,41 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
     const body = request.body
 
-    if (body.name === undefined) {
+    if (!body.name) {
         return response.status(400).json({
             error: 'name missing'
         })
     }
 
-    if (persons.filter(person => person.name.toLowerCase() === body.name.toLowerCase()).length > 0) {
-        return response.status(400).json({
-            error: 'name must be unique'
-        })
-    }
-
-    if (body.number === undefined) {
+    if (!body.number) {
         return response.status(400).json({
             error: 'number missing'
         })
     }
 
     const person = new Person({
-        id: Math.floor(Math.random() * 99999),
         name: body.name,
-        number: body.number
+        number: body.number,
     })
 
     person.save().then(savedPerson => {
         response.json(savedPerson)
     })
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    Person.findByIdAndUpdate(request.params.id, person, { new: true })
+        .then(updatedPerson => {
+            response.json(updatedPerson)
+        })
+        .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
