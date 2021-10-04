@@ -67,3 +67,55 @@ const errorHandler = (error, request, response, next) => {
     next(error)
 }
 ```
+
+## Promise Chaining
+- Many route handlers changed response data into right format by implicitly calling `toJSON` method from `response.json`.
+- We can also do this explicitly by calling `toJSON` on the object passed as a parameter to `then`:
+```javascript
+app.post('/api/notes', (request, response, next) => {
+    // ...
+
+    note.save()
+        .then(savedNote => {
+            response.json(savedNote.toJSON())
+        })
+        .catch(error => next(error))
+})
+```
+- Accomplish the same in a cleaner way with `promise chaining`:
+```javascript
+app.post('/api/notes', (request, response, next) => {
+    // ...
+
+    note
+        .save()
+        .then(savedNote => {
+            return savedNote.toJSON()
+        })
+        .then(savedAndFormattedNote => {
+            response. json(savedAndFormattedNote)
+        })
+        .catch(error => next(error))
+})
+```
+- In first `then`, we receive `savedNote` object returned by Mongoose and format it.
+- Result of operation is returned.
+- `then` method of promise returns a promise.
+    - We can access the formatted note by registering a new callback function with the `then` method.
+- Clean up code with arrow function syntax:
+```javascript
+app.post('/api/notes', (request, response, next) => {
+    // ...
+
+    note
+        .save()
+        .then(savedNote => savedNote.toJSON())
+        .then(savedAndFormattedNote => {
+            response. json(savedAndFormattedNote)
+        })
+        .catch(error => next(error))
+})
+```
+- Promise chaining does not provide much of a benefit.
+- Situation changes if there needs to be many asynchronous operations that had to be done in sequence.
+- Next part we will learn about `async/await` syntax in JS.
