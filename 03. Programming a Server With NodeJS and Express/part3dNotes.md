@@ -37,7 +37,7 @@ const noteSchema = new mongoose.Schema({
 - Operation throws an exception if we try to store an object in the database that breaks constraint.
 - Change handler for creating new note so it passes any potential exceptions to error handler middleware:
 ```javascript
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
     const body = request.body
 
     const note = new Note({
