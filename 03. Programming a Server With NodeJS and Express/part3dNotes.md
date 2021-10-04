@@ -119,3 +119,14 @@ app.post('/api/notes', (request, response, next) => {
 - Promise chaining does not provide much of a benefit.
 - Situation changes if there needs to be many asynchronous operations that had to be done in sequence.
 - Next part we will learn about `async/await` syntax in JS.
+
+## Deploying the Database Backend to Production
+- Application works almost as-is in Heroku.
+- Need to generate new production build of frontend due to changes in frontend.
+- Environment variables defined in dotenv will only be used when the backend is not in `production mode` (Heroku).
+- We defined environment variables for development in `.env`.
+- Environment variable that defines the database URL in production should be set to Heroku with the `heroku config:set` command:
+```
+heroku config:set MONGODB_URI=mongodb+srv://sample_user_1:<password>@first-example.5nttp.mongodb.net/note-app?retryWrites=true&w=majority
+```
+- If there are errors, put single quotation marks around URL.
