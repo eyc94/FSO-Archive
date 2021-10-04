@@ -130,3 +130,7 @@ app.post('/api/notes', (request, response, next) => {
 heroku config:set MONGODB_URI=mongodb+srv://sample_user_1:<password>@first-example.5nttp.mongodb.net/note-app?retryWrites=true&w=majority
 ```
 - If there are errors, put single quotation marks around URL.
+
+## Lint
+- Important tool called `lint`.
+    - Genericallly, lint or a linter is any tool that detects and flags errors in programming languages, including stylistic errors. The term lint-like behavior is sometimes applied to the process of flagging suspicious language usage. Lint-like tools generally perform static analysis of source code.
