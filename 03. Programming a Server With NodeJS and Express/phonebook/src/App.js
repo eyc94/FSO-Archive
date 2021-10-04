@@ -88,6 +88,16 @@ const App = () => {
                         setErrorMessage(null)
                     }, 5000)
                 })
+                .catch(error => {
+                    setMessageType('error')
+                    console.log(error.response.data.error)
+                    setErrorMessage(
+                        `${error.response.data.error}`
+                    )
+                    setTimeout(() => {
+                        setErrorMessage(null)
+                    }, 5000)
+                })
         }
         setNewName('') // Clear the name input box.
         setNewNumber('') // Clear the number input box.
