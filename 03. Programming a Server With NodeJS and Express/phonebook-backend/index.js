@@ -40,11 +40,15 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    const reqTime = new Date()
-    response.send(`
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${reqTime}</p>
-    `)
+    Person.countDocuments()
+        .then(result => {
+            const message = `
+                <p>Phonebook has info for ${result} people</p>
+                <p>${new Date()}</p>
+            `
+            response.send(message).end()
+        })
+        .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
