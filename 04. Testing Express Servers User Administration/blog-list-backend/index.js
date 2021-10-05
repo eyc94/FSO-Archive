@@ -4,14 +4,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 
-const blogSchema = new mongoose.Schema({
-    title: String,
-    author: String,
-    url: String,
-    likes: Number
-})
-
-const Blog = mongoose.model('Blog', blogSchema)
+const Blog = require('./models/blog')
 
 const mongoUrl = 'mongodb+srv://admin-user:<password>@blog-list.shekf.mongodb.net/blog-list-app?retryWrites=true&w=majority'
 mongoose.connect(mongoUrl)
