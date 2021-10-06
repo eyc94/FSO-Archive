@@ -19,7 +19,7 @@ const favoriteBlog = (blogs) => {
     }
 
     const max = blogs.reduce((prev, current) => {
-        prev.likes > current.likes ? prev : current
+        return prev.likes > current.likes ? prev : current
     })
 
     const favBlog = {
