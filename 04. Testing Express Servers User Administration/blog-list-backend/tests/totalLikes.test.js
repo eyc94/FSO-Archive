@@ -70,7 +70,7 @@ describe('total likes', () => {
 
     test('when list has only one blog, equals the likes of that', () => {
         const result = totalLikes(listWithOneBlog)
-        expect(result).toBe(0)
+        expect(result).toBe(5)
     })
 
     test('of a bigger list is calculated right', () => {
