@@ -63,3 +63,11 @@ const blogs = [
         __v: 0
     }
 ]
+
+describe('dummy', () => {
+    test('dummy returns one', () => {
+        const result = list_helper.dummy(noBlogs)
+        expect(result).toBe(1)
+    })
+})
+
