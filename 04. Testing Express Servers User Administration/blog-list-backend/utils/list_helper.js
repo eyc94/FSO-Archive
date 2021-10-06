@@ -4,7 +4,7 @@ const dummy = (blogs) => {
 
 const totalLikes = (blogs) => {
     const add = (sum, item) => {
-        return sum + item
+        return sum + item.likes
     }
 
     return blogs.length === 0
